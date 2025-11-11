@@ -178,7 +178,7 @@
         .config-controls {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .quantity-btn {
@@ -198,6 +198,22 @@
 
         .quantity-btn:hover {
             background: rgba(0, 198, 255, 0.3);
+        }
+
+        .quantity-input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            width: 60px;
+            height: 30px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .quantity-input:focus {
+            outline: none;
+            border-color: #00c6ff;
         }
 
         .cores-section {
@@ -549,10 +565,10 @@
                     <div class="cores-section">
                         <h3>Количество ядер</h3>
                         <div class="config-item">
-                            <div class="config-label"><span>2 ядра</span></div>
+                            <div class="config-label"><span>Ядра</span></div>
                             <div class="config-controls">
                                 <button class="quantity-btn minus" data-type="cores">-</button>
-                                <span class="config-value" id="coresQuantity">2</span>
+                                <input type="number" class="quantity-input" id="coresInput" value="2" min="2" max="32" step="2">
                                 <button class="quantity-btn plus" data-type="cores">+</button>
                             </div>
                             <div class="cores-price"><span id="coresPrice">+500 ₽/мес</span></div>
@@ -564,7 +580,7 @@
                         <div class="config-label"><span id="ramLabel">4 ГБ</span></div>
                         <div class="config-controls">
                             <button class="quantity-btn minus" data-type="ram">-</button>
-                            <span class="config-value" id="ramQuantity">1</span>
+                            <input type="number" class="quantity-input" id="ramInput" value="4" min="4" max="512">
                             <button class="quantity-btn plus" data-type="ram">+</button>
                         </div>
                         <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
@@ -572,10 +588,10 @@
 
                     <h3>Дисковое пространство</h3>
                     <div class="config-item">
-                        <div class="config-label"><span>10 ГБ</span></div>
+                        <div class="config-label"><span id="storageLabel">10 ГБ</span></div>
                         <div class="config-controls">
                             <button class="quantity-btn minus" data-type="storage">-</button>
-                            <span class="config-value" id="storageQuantity">1</span>
+                            <input type="number" class="quantity-input" id="storageInput" value="1" min="1" max="100">
                             <button class="quantity-btn plus" data-type="storage">+</button>
                         </div>
                         <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
@@ -595,17 +611,17 @@
 
                     <h3 class="backup-title-server">Резервное копирование</h3>
                     <div class="backup-options-server">
-                        <div class="backup-option-server selected" data-backup="7days" data-multiplier="1" data-additional="0">
+                        <div class="backup-option-server selected" data-backup="7days" data-multiplier="1">
                             <div class="backup-name"><span>7 дней</span></div>
-                            <div class="backup-price"><span>+0 ₽</span></div>
+                            <div class="backup-price"><span>включено</span></div>
                         </div>
-                        <div class="backup-option-server" data-backup="14days" data-multiplier="1.25" data-additional="300">
+                        <div class="backup-option-server" data-backup="14days" data-multiplier="1.25">
                             <div class="backup-name"><span>14 дней</span></div>
-                            <div class="backup-price"><span>+300 ₽</span></div>
+                            <div class="backup-price"><span>x1.25</span></div>
                         </div>
-                        <div class="backup-option-server" data-backup="30days" data-multiplier="1.5" data-additional="600">
+                        <div class="backup-option-server" data-backup="30days" data-multiplier="1.5">
                             <div class="backup-name"><span>30 дней</span></div>
-                            <div class="backup-price"><span>+600 ₽</span></div>
+                            <div class="backup-price"><span>x1.5</span></div>
                         </div>
                     </div>
                 </div>
@@ -616,13 +632,13 @@
                     <div class="config-item">
                         <div class="config-label"><span>Процессор</span></div>
                         <div class="config-value" id="configProcessor"><span>Xeon Gold 6244</span></div>
-                        <div class="config-price"><span>0 ₽</span></div>
+                        <div class="config-price"></div>
                     </div>
 
                     <div class="config-item">
                         <div class="config-label"><span>Тип CPU</span></div>
                         <div class="config-value" id="configCpuType"><span>vCPU</span></div>
-                        <div class="config-price"><span id="configCpuTypePrice">500 ₽</span></div>
+                        <div class="config-price"></div>
                     </div>
 
                     <div class="config-item">
@@ -651,7 +667,7 @@
 
                     <div class="total-section">
                         <h3>Итого в месяц:</h3>
-                        <div class="total-price" id="totalPrice"><span>2 120 ₽</span></div>
+                        <div class="total-price" id="totalPrice"><span>1 620 ₽</span></div>
                         <button class="order-btn" id="orderBtn">Заказать мощности</button>
                     </div>
                 </div>
@@ -692,7 +708,7 @@
                         </div>
                         <div class="order-total">
                             <span>Итого в месяц:</span>
-                            <span id="orderTotal">2 120 ₽</span>
+                            <span id="orderTotal">1 620 ₽</span>
                         </div>
                     </div>
 
@@ -740,10 +756,10 @@
 
                     <h3>ОБЪЕМ ХРАНИЛИЩА</h3>
                     <div class="config-item">
-                        <div class="config-label"><span>10 ГБ</span></div>
+                        <div class="config-label"><span id="storageSpaceLabel">10 ГБ</span></div>
                         <div class="config-controls">
                             <button class="quantity-btn minus" data-type="storage-space">-</button>
-                            <span class="config-value" id="storageSpaceQuantity">1</span>
+                            <input type="number" class="quantity-input" id="storageSpaceInput" value="1" min="1" max="100">
                             <button class="quantity-btn plus" data-type="storage-space">+</button>
                         </div>
                         <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
@@ -751,17 +767,17 @@
 
                     <h3 class="backup-title-disk">РЕЗЕРВНОЕ КОПИРОВАНИЕ</h3>
                     <div class="backup-options-disk">
-                        <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1" data-additional="0">
+                        <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1">
                             <div class="backup-name"><span>7 дней</span></div>
-                            <div class="backup-price"><span>+0 ₽</span></div>
+                            <div class="backup-price"><span>включено</span></div>
                         </div>
-                        <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25" data-additional="300">
+                        <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25">
                             <div class="backup-name"><span>14 дней</span></div>
-                            <div class="backup-price"><span>+300 ₽</span></div>
+                            <div class="backup-price"><span>x1.25</span></div>
                         </div>
-                        <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5" data-additional="600">
+                        <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5">
                             <div class="backup-name"><span>30 дней</span></div>
-                            <div class="backup-price"><span>+600 ₽</span></div>
+                            <div class="backup-price"><span>x1.5</span></div>
                         </div>
                     </div>
                 </div>
@@ -773,7 +789,7 @@
                     <div class="config-item">
                         <div class="config-label"><span>Тип хранилища</span></div>
                         <div class="config-value" id="configStorageType"><span>NVMe 200k IOPS</span></div>
-                        <div class="config-price"><span>0 ₽</span></div>
+                        <div class="config-price"></div>
                     </div>
 
                     <div class="config-item">
@@ -862,8 +878,7 @@
             storageType: 'nvme',
             storagePrice: 12,
             backup: '7days',
-            backupMultiplier: 1,
-            backupAdditional: 0
+            backupMultiplier: 1
         };
 
         // Базовая конфигурация дискового пространства
@@ -873,8 +888,7 @@
             storageSpace: 10,
             storageSpaceQuantity: 1,
             backup: '7days',
-            backupMultiplier: 1,
-            backupAdditional: 0
+            backupMultiplier: 1
         };
 
         // Функция расчета стоимости RAM в зависимости от типа CPU и объема
@@ -911,18 +925,22 @@
         function calculateTotal() {
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram * config.ramQuantity, config.cpuType);
-            const storageCost = config.storagePrice * config.storage * config.storageQuantity;
-            const backupCost = config.backupAdditional;
+            const storageCost = config.storagePrice * config.storage * config.storageQuantity * config.backupMultiplier;
             
-            const total = coresCost + ramCost + storageCost + backupCost;
+            const total = coresCost + ramCost + storageCost;
             return total;
         }
 
         // Функция расчета стоимости хранилища
         function calculateStorageTotal() {
-            const storageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
-            const backupCost = storageConfig.backupAdditional;
-            return storageCost + backupCost;
+            const baseStorageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
+            const totalStorageCost = baseStorageCost * storageConfig.backupMultiplier;
+            const backupAdditional = totalStorageCost - baseStorageCost;
+            
+            return {
+                total: totalStorageCost,
+                backupAdditional: backupAdditional
+            };
         }
 
         // Вспомогательные функции
@@ -948,22 +966,23 @@
             // Обновляем цены в правой колонке
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram * config.ramQuantity, config.cpuType);
-            const storageCost = config.storagePrice * config.storage * config.storageQuantity;
+            const baseStorageCost = config.storagePrice * config.storage * config.storageQuantity;
+            const totalStorageCost = baseStorageCost * config.backupMultiplier;
+            const backupAdditional = totalStorageCost - baseStorageCost;
             
-            document.getElementById('configCpuTypePrice').textContent = coresCost + ' ₽';
             document.getElementById('configCoresPrice').textContent = coresCost + ' ₽';
             document.getElementById('configRamPrice').textContent = ramCost + ' ₽';
-            document.getElementById('configStoragePrice').textContent = storageCost + ' ₽';
-            document.getElementById('configBackupServerPrice').textContent = config.backupAdditional + ' ₽';
+            document.getElementById('configStoragePrice').textContent = Math.round(baseStorageCost) + ' ₽';
+            document.getElementById('configBackupServerPrice').textContent = '+' + Math.round(backupAdditional) + ' ₽';
             
             // Обновляем цены в левой колонке
             document.getElementById('coresPrice').textContent = '+' + coresCost + ' ₽/мес';
             document.getElementById('ramPrice').textContent = '+' + ramCost + ' ₽/мес';
-            document.getElementById('storagePrice').textContent = '+' + storageCost + ' ₽/мес';
+            document.getElementById('storagePrice').textContent = '+' + Math.round(totalStorageCost) + ' ₽/мес';
             
             // Обновляем общую стоимость
             const total = calculateTotal();
-            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalPrice').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽';
         }
 
         // Обновление отображения хранилища
@@ -972,15 +991,17 @@
             document.getElementById('configStorageSpace').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
             document.getElementById('configBackup').textContent = getBackupName(storageConfig.backup);
             
-            const storageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
+            const baseStorageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
+            const totalStorageCost = baseStorageCost * storageConfig.backupMultiplier;
+            const backupAdditional = totalStorageCost - baseStorageCost;
             
-            document.getElementById('configStorageSpacePrice').textContent = storageCost + ' ₽';
-            document.getElementById('configBackupPrice').textContent = storageConfig.backupAdditional + ' ₽';
+            document.getElementById('configStorageSpacePrice').textContent = Math.round(baseStorageCost) + ' ₽';
+            document.getElementById('configBackupPrice').textContent = '+' + Math.round(backupAdditional) + ' ₽';
             
-            document.getElementById('storageSpacePrice').textContent = '+' + storageCost + ' ₽/мес';
+            document.getElementById('storageSpacePrice').textContent = '+' + Math.round(totalStorageCost) + ' ₽/мес';
             
             const total = calculateStorageTotal();
-            document.getElementById('totalStoragePrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('totalStoragePrice').textContent = Math.round(total.total).toLocaleString('ru-RU') + ' ₽';
         }
 
         // Обработчики для типа CPU
@@ -997,14 +1018,14 @@
                 config.ram = baseRam;
                 config.ramQuantity = 1;
                 
-                document.getElementById('ramQuantity').textContent = config.ramQuantity;
+                document.getElementById('ramInput').value = config.ram;
                 document.getElementById('ramLabel').textContent = baseRam + ' ГБ';
                 
                 updateDisplay();
             });
         });
 
-        // Обработчики для кнопок количества ядер (шаг 2)
+        // Обработчики для кнопок количества ядер
         document.querySelectorAll('.cores-section .quantity-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const isPlus = this.classList.contains('plus');
@@ -1017,37 +1038,57 @@
                     config.cores -= 2;
                 }
                 
-                // Обновляем базовый объем RAM для 100% CPU
-                if (config.cpuType === 'full-cpu') {
-                    const baseRam = getBaseRam(config.cpuType, config.cores);
-                    config.ram = baseRam;
-                    config.ramQuantity = 1;
-                    document.getElementById('ramQuantity').textContent = config.ramQuantity;
-                    document.getElementById('ramLabel').textContent = baseRam + ' ГБ';
-                }
-                
-                document.getElementById('coresQuantity').textContent = config.cores;
+                document.getElementById('coresInput').value = config.cores;
                 updateDisplay();
             });
+        });
+
+        // Обработчик ввода для ядер
+        document.getElementById('coresInput').addEventListener('change', function() {
+            let value = parseInt(this.value);
+            const maxCores = config.cpuType === 'full-cpu' ? 16 : 32;
+            
+            // Округляем до четного числа
+            value = Math.round(value / 2) * 2;
+            value = Math.max(2, Math.min(maxCores, value));
+            
+            config.cores = value;
+            this.value = value;
+            updateDisplay();
         });
 
         // Обработчики для кнопок количества RAM
         document.querySelectorAll('#configurator-server + .configurator-container .quantity-btn[data-type="ram"]').forEach(btn => {
             btn.addEventListener('click', function() {
                 const isPlus = this.classList.contains('plus');
-                const maxRam = config.cpuType === 'full-cpu' ? 256 : 128;
+                const maxRam = config.cpuType === 'full-cpu' ? 512 : 512;
                 
-                if (isPlus && config.ramQuantity < maxRam) {
-                    config.ramQuantity++;
+                if (isPlus && config.ram < maxRam) {
+                    config.ram += 4;
                 }
-                if (!isPlus && config.ramQuantity > 1) {
-                    config.ramQuantity--;
+                if (!isPlus && config.ram > 4) {
+                    config.ram -= 4;
                 }
                 
-                document.getElementById('ramQuantity').textContent = config.ramQuantity;
-                document.getElementById('ramLabel').textContent = (config.ram * config.ramQuantity) + ' ГБ';
+                document.getElementById('ramInput').value = config.ram;
+                document.getElementById('ramLabel').textContent = config.ram + ' ГБ';
                 updateDisplay();
             });
+        });
+
+        // Обработчик ввода для RAM
+        document.getElementById('ramInput').addEventListener('change', function() {
+            let value = parseInt(this.value);
+            const maxRam = config.cpuType === 'full-cpu' ? 512 : 512;
+            
+            value = Math.max(4, Math.min(maxRam, value));
+            // Округляем до ближайшего кратного 4
+            value = Math.round(value / 4) * 4;
+            
+            config.ram = value;
+            this.value = value;
+            document.getElementById('ramLabel').textContent = value + ' ГБ';
+            updateDisplay();
         });
 
         // Обработчики для кнопок количества хранилища серверных мощностей
@@ -1062,9 +1103,21 @@
                     config.storageQuantity--;
                 }
                 
-                document.getElementById('storageQuantity').textContent = config.storageQuantity;
+                document.getElementById('storageInput').value = config.storageQuantity;
+                document.getElementById('storageLabel').textContent = (config.storage * config.storageQuantity) + ' ГБ';
                 updateDisplay();
             });
+        });
+
+        // Обработчик ввода для хранилища серверных мощностей
+        document.getElementById('storageInput').addEventListener('change', function() {
+            let value = parseInt(this.value);
+            value = Math.max(1, Math.min(100, value));
+            
+            config.storageQuantity = value;
+            this.value = value;
+            document.getElementById('storageLabel').textContent = (config.storage * config.storageQuantity) + ' ГБ';
+            updateDisplay();
         });
 
         // Обработчики для типа хранилища серверных мощностей
@@ -1087,7 +1140,6 @@
                 
                 config.backup = this.dataset.backup;
                 config.backupMultiplier = parseFloat(this.dataset.multiplier);
-                config.backupAdditional = parseInt(this.dataset.additional);
                 updateDisplay();
             });
         });
@@ -1116,9 +1168,21 @@
                     storageConfig.storageSpaceQuantity--;
                 }
                 
-                document.getElementById('storageSpaceQuantity').textContent = storageConfig.storageSpaceQuantity;
+                document.getElementById('storageSpaceInput').value = storageConfig.storageSpaceQuantity;
+                document.getElementById('storageSpaceLabel').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
                 updateStorageDisplay();
             });
+        });
+
+        // Обработчик ввода для хранилища дискового пространства
+        document.getElementById('storageSpaceInput').addEventListener('change', function() {
+            let value = parseInt(this.value);
+            value = Math.max(1, Math.min(100, value));
+            
+            storageConfig.storageSpaceQuantity = value;
+            this.value = value;
+            document.getElementById('storageSpaceLabel').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
+            updateStorageDisplay();
         });
 
         // Обработчики для резервного копирования дискового пространства
@@ -1129,7 +1193,6 @@
                 
                 storageConfig.backup = this.dataset.backup;
                 storageConfig.backupMultiplier = parseFloat(this.dataset.multiplier);
-                storageConfig.backupAdditional = parseInt(this.dataset.additional);
                 updateStorageDisplay();
             });
         });
@@ -1148,7 +1211,7 @@
             document.getElementById('orderRam').textContent = (config.ram * config.ramQuantity) + ' ГБ';
             document.getElementById('orderStorage').textContent = (config.storage * config.storageQuantity) + ' ГБ ' + (config.storageType === 'nvme' ? 'NVMe' : 'SAS');
             document.getElementById('orderBackupServer').textContent = getBackupName(config.backup);
-            document.getElementById('orderTotal').textContent = calculateTotal().toLocaleString('ru-RU') + ' ₽';
+            document.getElementById('orderTotal').textContent = Math.round(calculateTotal()).toLocaleString('ru-RU') + ' ₽';
         }
 
         orderBtn.addEventListener('click', function() {
@@ -1177,7 +1240,8 @@
             document.getElementById('orderStorageType').textContent = storageConfig.storageType === 'nvme' ? 'NVMe 200k IOPS' : 'SAS 10K';
             document.getElementById('orderStorageSpace').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
             document.getElementById('orderBackup').textContent = getBackupName(storageConfig.backup);
-            document.getElementById('orderStorageTotal').textContent = calculateStorageTotal().toLocaleString('ru-RU') + ' ₽';
+            const total = calculateStorageTotal();
+            document.getElementById('orderStorageTotal').textContent = Math.round(total.total).toLocaleString('ru-RU') + ' ₽';
         }
 
         orderStorageBtn.addEventListener('click', function() {
