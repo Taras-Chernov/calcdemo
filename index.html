@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конфигуратор серверных мощностей</title>
+    <style>
+        /* Базовые стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0c1a2d;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .order {
+            padding: 20px 0;
+        }
+
+        .configurator-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px 0;
+            align-items: flex-start;
+        }
+
+        @media (max-width: 968px) {
+            .configurator-container {
+                flex-direction: column;
+            }
+        }
+
+        .configurator-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .configurator-header h2 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .selection-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+
+        .configuration-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex: 1;
+        }
+
+        .configuration-title {
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-bottom: 15px;
+            color: #00c6ff;
+        }
+
+        /* Стили для процессоров */
+        .processor-options {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .processor-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .processor-option.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .processor-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Стили для типа CPU */
+        .cpu-type-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .cpu-type-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .cpu-type-option.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .cpu-type-option:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .cpu-type-price {
+            color: #00c6ff;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Стили для конфигурационных элементов */
+        .config-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .config-label {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .config-value {
+            color: #00c6ff;
+            margin: 0 15px;
+        }
+
+        .config-price {
+            color: #00c6ff;
+            font-weight: bold;
+            min-width: 100px;
+            text-align: right;
+        }
+
+        .config-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(0, 198, 255, 0.3);
+        }
+
+        .cores-section {
+            margin: 25px 0;
+        }
+
+        /* Стили для хранилища серверных мощностей */
+        .storage-options-server {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .storage-option-server {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .storage-option-server.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .storage-option-server:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .storage-price {
+            color: #00c6ff;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        /* Стили для резервного копирования серверных мощностей */
+        .backup-options-server {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .backup-option-server {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .backup-option-server.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .backup-option-server:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .backup-name {
+            font-weight: 500;
+        }
+
+        .backup-price {
+            color: #00c6ff;
+            font-weight: 600;
+        }
+
+        /* Стили для хранилища дискового пространства */
+        .storage-options-disk {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .storage-option-disk {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .storage-option-disk.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .storage-option-disk:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Стили для резервного копирования дискового пространства */
+        .backup-options-disk {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .backup-option-disk {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .backup-option-disk.selected {
+            border-color: #00c6ff;
+            background: rgba(0, 198, 255, 0.1);
+        }
+
+        .backup-option-disk:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        /* Стили для итоговой секции */
+        .total-section {
+            margin-top: 30px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .total-price {
+            font-size: clamp(1rem, 2vw, 1.8rem);
+            line-height: 2rem;
+            font-weight: 700;
+            color: #00c6ff;
+            margin: 15px 0;
+        }
+
+        .order-btn {
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .order-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+        }
+
+        /* Стили для модальных окон */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #00c6ff;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #0c1a2d;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: #666;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            color: #ff4444;
+        }
+
+        .order-summary {
+            background: rgba(0, 198, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 15px 0 0 0;
+            border-top: 2px solid #00c6ff;
+            margin-top: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #00c6ff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+        }
+
+        .submit-order {
+            width: 100%;
+            background: linear-gradient(45deg, #00c6ff, #0072ff);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .submit-order:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 198, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <section class="order">
+        <div class="wrapper">
+            <!-- КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ -->
+            <div class="configurator-header" id="configurator-server">
+                <h2 id="configurator">КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ</h2>
+            </div>
+            <div class="configurator-container">
+                <!-- Левый столбец - Выбор конфигурации -->
+                <div class="selection-section">
+                    <h3 class="processor-title">Процессор</h3>
+                    <div class="processor-options">
+                        <div class="processor-option selected" data-processor="xeon-gold">
+                            <div class="processor-name"><span>Xeon Gold 6244</span></div>
+                        </div>
+                    </div>
+
+                    <h3>Выберите тип CPU</h3>
+                    <div class="cpu-type-options">
+                        <div class="cpu-type-option selected" data-cpu-type="vcpu" data-price="250">
+                            <div><span>vCPU</span></div>
+                            <div class="cpu-type-price"><span>250 ₽/ядро</span></div>
+                        </div>
+                        <div class="cpu-type-option" data-cpu-type="full-cpu" data-price="2000">
+                            <div><span>100% CPU</span></div>
+                            <div class="cpu-type-price"><span>2 000 ₽/ядро</span></div>
+                        </div>
+                    </div>
+
+                    <div class="cores-section">
+                        <h3>Количество ядер</h3>
+                        <div class="config-item">
+                            <div class="config-label"><span>2 ядра</span></div>
+                            <div class="config-controls">
+                                <button class="quantity-btn minus" data-type="cores">-</button>
+                                <span class="config-value" id="coresQuantity">2</span>
+                                <button class="quantity-btn plus" data-type="cores">+</button>
+                            </div>
+                            <div class="cores-price"><span id="coresPrice">+500 ₽/мес</span></div>
+                        </div>
+                    </div>
+
+                    <h3>Оперативная память (RAM)</h3>
+                    <div class="config-item">
+                        <div class="config-label"><span id="ramLabel">4 ГБ</span></div>
+                        <div class="config-controls">
+                            <button class="quantity-btn minus" data-type="ram">-</button>
+                            <span class="config-value" id="ramQuantity">1</span>
+                            <button class="quantity-btn plus" data-type="ram">+</button>
+                        </div>
+                        <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
+                    </div>
+
+                    <h3>Дисковое пространство</h3>
+                    <div class="config-item">
+                        <div class="config-label"><span>10 ГБ</span></div>
+                        <div class="config-controls">
+                            <button class="quantity-btn minus" data-type="storage">-</button>
+                            <span class="config-value" id="storageQuantity">1</span>
+                            <button class="quantity-btn plus" data-type="storage">+</button>
+                        </div>
+                        <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
+                    </div>
+
+                    <h3>Тип хранилища</h3>
+                    <div class="storage-options-server">
+                        <div class="storage-option-server selected" data-type="nvme" data-price="12">
+                            <div><span>NVMe 200k IOPS</span></div>
+                            <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                        </div>
+                        <div class="storage-option-server" data-type="sas" data-price="6">
+                            <div><span>SAS 10K</span></div>
+                            <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                        </div>
+                    </div>
+
+                    <h3 class="backup-title-server">Резервное копирование</h3>
+                    <div class="backup-options-server">
+                        <div class="backup-option-server selected" data-backup="7days" data-multiplier="1" data-additional="0">
+                            <div class="backup-name"><span>7 дней</span></div>
+                            <div class="backup-price"><span>+0 ₽</span></div>
+                        </div>
+                        <div class="backup-option-server" data-backup="14days" data-multiplier="1.25" data-additional="300">
+                            <div class="backup-name"><span>14 дней</span></div>
+                            <div class="backup-price"><span>+300 ₽</span></div>
+                        </div>
+                        <div class="backup-option-server" data-backup="30days" data-multiplier="1.5" data-additional="600">
+                            <div class="backup-name"><span>30 дней</span></div>
+                            <div class="backup-price"><span>+600 ₽</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правый столбец - Итоговая конфигурация -->
+                <div class="configuration-section">
+                    <h3 class="configuration-title">Ваша конфигурация</h3>
+                    <div class="config-item">
+                        <div class="config-label"><span>Процессор</span></div>
+                        <div class="config-value" id="configProcessor"><span>Xeon Gold 6244</span></div>
+                        <div class="config-price"><span>0 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Тип CPU</span></div>
+                        <div class="config-value" id="configCpuType"><span>vCPU</span></div>
+                        <div class="config-price"><span id="configCpuTypePrice">500 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Ядра</span></div>
+                        <div class="config-value" id="configCores"><span>2 ядра</span></div>
+                        <div class="config-price"><span id="configCoresPrice">500 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Память</span></div>
+                        <div class="config-value" id="configRam"><span>4 ГБ</span></div>
+                        <div class="config-price"><span id="configRamPrice">1 000 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Хранилище</span></div>
+                        <div class="config-value" id="configStorage"><span>10 ГБ NVMe</span></div>
+                        <div class="config-price"><span id="configStoragePrice">120 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Резервное копирование</span></div>
+                        <div class="config-value" id="configBackupServer"><span>7 дней</span></div>
+                        <div class="config-price"><span id="configBackupServerPrice">0 ₽</span></div>
+                    </div>
+
+                    <div class="total-section">
+                        <h3>Итого в месяц:</h3>
+                        <div class="total-price" id="totalPrice"><span>2 120 ₽</span></div>
+                        <button class="order-btn" id="orderBtn">Заказать мощности</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно заказа -->
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Ваш заказ серверных мощностей</div>
+                        <button class="close-modal" id="closeModal">×</button>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="order-item">
+                            <span>Процессор:</span>
+                            <span id="orderProcessor">Xeon Gold 6244</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Тип CPU:</span>
+                            <span id="orderCpuType">vCPU</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Количество ядер:</span>
+                            <span id="orderCores">2 ядра</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Оперативная память:</span>
+                            <span id="orderRam">4 ГБ</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Хранилище:</span>
+                            <span id="orderStorage">10 ГБ NVMe</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Резервное копирование:</span>
+                            <span id="orderBackupServer">7 дней</span>
+                        </div>
+                        <div class="order-total">
+                            <span>Итого в месяц:</span>
+                            <span id="orderTotal">2 120 ₽</span>
+                        </div>
+                    </div>
+
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label for="userName">Ваше имя *</label>
+                            <input type="text" id="userName" required placeholder="Иван Иванов">
+                        </div>
+                        <div class="form-group">
+                            <label for="userEmail">Email *</label>
+                            <input type="email" id="userEmail" required placeholder="ivan@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="userPhone">Телефон *</label>
+                            <input type="tel" id="userPhone" required placeholder="+7 (999) 999-99-99">
+                        </div>
+                        <div class="form-group">
+                            <label for="userComment">Комментарий к заказу</label>
+                            <textarea id="userComment" placeholder="Дополнительные пожелания или требования"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-order">Отправить заказ</button>
+                    </form>
+                </div>
+            </div>      
+            
+            <!-- КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА -->
+            <div class="configurator-header">
+                <h2>КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА</h2>
+            </div>    
+            <div class="configurator-container" id="config-disk">
+                <!-- Левый столбец - Выбор конфигурации -->
+                <div class="selection-section">
+                    <h3>ТИП ХРАНИЛИЩА</h3>
+                    <div class="storage-options-disk">
+                        <div class="storage-option-disk selected" data-type="nvme" data-price="12">
+                            <div><span>NVMe 200k IOPS</span></div>
+                            <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                        </div>
+                        <div class="storage-option-disk" data-type="sas" data-price="6">
+                            <div><span>SAS 10K</span></div>
+                            <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                        </div>
+                    </div>
+
+                    <h3>ОБЪЕМ ХРАНИЛИЩА</h3>
+                    <div class="config-item">
+                        <div class="config-label"><span>10 ГБ</span></div>
+                        <div class="config-controls">
+                            <button class="quantity-btn minus" data-type="storage-space">-</button>
+                            <span class="config-value" id="storageSpaceQuantity">1</span>
+                            <button class="quantity-btn plus" data-type="storage-space">+</button>
+                        </div>
+                        <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
+                    </div>
+
+                    <h3 class="backup-title-disk">РЕЗЕРВНОЕ КОПИРОВАНИЕ</h3>
+                    <div class="backup-options-disk">
+                        <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1" data-additional="0">
+                            <div class="backup-name"><span>7 дней</span></div>
+                            <div class="backup-price"><span>+0 ₽</span></div>
+                        </div>
+                        <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25" data-additional="300">
+                            <div class="backup-name"><span>14 дней</span></div>
+                            <div class="backup-price"><span>+300 ₽</span></div>
+                        </div>
+                        <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5" data-additional="600">
+                            <div class="backup-name"><span>30 дней</span></div>
+                            <div class="backup-price"><span>+600 ₽</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Правый столбец - Итоговая конфигурация -->
+                <div class="configuration-section">
+                    <h3>ВАША КОНФИГУРАЦИЯ</h3>
+                    
+                    <div class="config-item">
+                        <div class="config-label"><span>Тип хранилища</span></div>
+                        <div class="config-value" id="configStorageType"><span>NVMe 200k IOPS</span></div>
+                        <div class="config-price"><span>0 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Объем</span></div>
+                        <div class="config-value" id="configStorageSpace"><span>10 ГБ</span></div>
+                        <div class="config-price" id="configStorageSpacePrice"><span>120 ₽</span></div>
+                    </div>
+
+                    <div class="config-item">
+                        <div class="config-label"><span>Резервное копирование</span></div>
+                        <div class="config-value" id="configBackup"><span>7 дней</span></div>
+                        <div class="config-price" id="configBackupPrice"><span>0 ₽</span></div>
+                    </div>
+
+                    <div class="total-section">
+                        <h3>ИТОГО В МЕСЯЦ:</h3>
+                        <div class="total-price" id="totalStoragePrice"><span>120 ₽</span></div>
+                        <button class="order-btn" id="orderStorageBtn">Заказать хранилище</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Модальное окно для заказа хранилища -->
+            <div class="modal-overlay" id="storageModalOverlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="modal-title">Ваш заказ дискового пространства</div>
+                        <button class="close-modal" id="closeStorageModal">×</button>
+                    </div>
+                    
+                    <div class="order-summary">
+                        <div class="order-item">
+                            <span>Тип хранилища:</span>
+                            <span id="orderStorageType">NVMe 200k IOPS</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Объем:</span>
+                            <span id="orderStorageSpace">10 ГБ</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Резервное копирование:</span>
+                            <span id="orderBackup">7 дней</span>
+                        </div>
+                        <div class="order-total">
+                            <span>Итого в месяц:</span>
+                            <span id="orderStorageTotal">120 ₽</span>
+                        </div>
+                    </div>
+
+                    <form id="storageOrderForm">
+                        <div class="form-group">
+                            <label for="storageUserName">Ваше имя *</label>
+                            <input type="text" id="storageUserName" required placeholder="Иван Иванов">
+                        </div>
+                        <div class="form-group">
+                            <label for="storageUserEmail">Email *</label>
+                            <input type="email" id="storageUserEmail" required placeholder="ivan@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="storageUserPhone">Телефон *</label>
+                            <input type="tel" id="storageUserPhone" required placeholder="+7 (999) 999-99-99">
+                        </div>
+                        <div class="form-group">
+                            <label for="storageUserComment">Комментарий к заказу</label>
+                            <textarea id="storageUserComment" placeholder="Дополнительные пожелания или требования"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-order">Отправить заказ</button>
+                    </form>
+                </div>
+            </div>
+        </div>      
+    </section>
+
+    <script>
+        // Базовая конфигурация серверных мощностей
+        let config = {
+            processor: 'xeon-gold',
+            cpuType: 'vcpu',
+            cpuPrice: 250,
+            cores: 2,
+            ram: 4,
+            ramQuantity: 1,
+            storage: 10,
+            storageQuantity: 1,
+            storageType: 'nvme',
+            storagePrice: 12,
+            backup: '7days',
+            backupMultiplier: 1,
+            backupAdditional: 0
+        };
+
+        // Базовая конфигурация дискового пространства
+        let storageConfig = {
+            storageType: 'nvme',
+            storagePrice: 12,
+            storageSpace: 10,
+            storageSpaceQuantity: 1,
+            backup: '7days',
+            backupMultiplier: 1,
+            backupAdditional: 0
+        };
+
+        // Функция расчета стоимости RAM в зависимости от типа CPU и объема
+        function calculateRamPrice(ramGB, cpuType) {
+            if (cpuType === 'full-cpu') {
+                return ramGB * 40; // 40 руб/ГБ для 100% CPU
+            } else {
+                // vCPU: до 32ГБ - 250р, 32-64ГБ - 220р, свыше 64ГБ - 200р
+                if (ramGB <= 32) {
+                    return ramGB * 250;
+                } else if (ramGB <= 64) {
+                    return ramGB * 220;
+                } else {
+                    return ramGB * 200;
+                }
+            }
+        }
+
+        // Функция расчета стоимости процессоров
+        function calculateCoresPrice(cores, cpuPrice) {
+            return cores * cpuPrice;
+        }
+
+        // Функция получения базового объема RAM в зависимости от типа CPU и количества ядер
+        function getBaseRam(cpuType, cores) {
+            if (cpuType === 'full-cpu') {
+                return cores * 16; // 16 ГБ на ядро для 100% CPU
+            } else {
+                return 4; // 4 ГБ базово для vCPU
+            }
+        }
+
+        // Функция расчета общей стоимости серверных мощностей
+        function calculateTotal() {
+            const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
+            const ramCost = calculateRamPrice(config.ram * config.ramQuantity, config.cpuType);
+            const storageCost = config.storagePrice * config.storage * config.storageQuantity;
+            const backupCost = config.backupAdditional;
+            
+            const total = coresCost + ramCost + storageCost + backupCost;
+            return total;
+        }
+
+        // Функция расчета стоимости хранилища
+        function calculateStorageTotal() {
+            const storageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
+            const backupCost = storageConfig.backupAdditional;
+            return storageCost + backupCost;
+        }
+
+        // Вспомогательные функции
+        function getBackupName(type) {
+            const backups = {
+                '7days': '7 дней',
+                '14days': '14 дней',
+                '30days': '30 дней'
+            };
+            return backups[type];
+        }
+
+        // Обновление отображения серверных мощностей
+        function updateDisplay() {
+            // Обновляем основное отображение
+            document.getElementById('configProcessor').textContent = 'Xeon Gold 6244';
+            document.getElementById('configCpuType').textContent = config.cpuType === 'vcpu' ? 'vCPU' : '100% CPU';
+            document.getElementById('configCores').textContent = config.cores + ' ядер';
+            document.getElementById('configRam').textContent = (config.ram * config.ramQuantity) + ' ГБ';
+            document.getElementById('configStorage').textContent = (config.storage * config.storageQuantity) + ' ГБ ' + (config.storageType === 'nvme' ? 'NVMe' : 'SAS');
+            document.getElementById('configBackupServer').textContent = getBackupName(config.backup);
+            
+            // Обновляем цены в правой колонке
+            const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
+            const ramCost = calculateRamPrice(config.ram * config.ramQuantity, config.cpuType);
+            const storageCost = config.storagePrice * config.storage * config.storageQuantity;
+            
+            document.getElementById('configCpuTypePrice').textContent = coresCost + ' ₽';
+            document.getElementById('configCoresPrice').textContent = coresCost + ' ₽';
+            document.getElementById('configRamPrice').textContent = ramCost + ' ₽';
+            document.getElementById('configStoragePrice').textContent = storageCost + ' ₽';
+            document.getElementById('configBackupServerPrice').textContent = config.backupAdditional + ' ₽';
+            
+            // Обновляем цены в левой колонке
+            document.getElementById('coresPrice').textContent = '+' + coresCost + ' ₽/мес';
+            document.getElementById('ramPrice').textContent = '+' + ramCost + ' ₽/мес';
+            document.getElementById('storagePrice').textContent = '+' + storageCost + ' ₽/мес';
+            
+            // Обновляем общую стоимость
+            const total = calculateTotal();
+            document.getElementById('totalPrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        // Обновление отображения хранилища
+        function updateStorageDisplay() {
+            document.getElementById('configStorageType').textContent = storageConfig.storageType === 'nvme' ? 'NVMe 200k IOPS' : 'SAS 10K';
+            document.getElementById('configStorageSpace').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
+            document.getElementById('configBackup').textContent = getBackupName(storageConfig.backup);
+            
+            const storageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.storageSpaceQuantity;
+            
+            document.getElementById('configStorageSpacePrice').textContent = storageCost + ' ₽';
+            document.getElementById('configBackupPrice').textContent = storageConfig.backupAdditional + ' ₽';
+            
+            document.getElementById('storageSpacePrice').textContent = '+' + storageCost + ' ₽/мес';
+            
+            const total = calculateStorageTotal();
+            document.getElementById('totalStoragePrice').textContent = total.toLocaleString('ru-RU') + ' ₽';
+        }
+
+        // Обработчики для типа CPU
+        document.querySelectorAll('.cpu-type-option').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.cpu-type-option').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                config.cpuType = this.dataset.cpuType;
+                config.cpuPrice = parseInt(this.dataset.price);
+                
+                // Обновляем базовый объем RAM
+                const baseRam = getBaseRam(config.cpuType, config.cores);
+                config.ram = baseRam;
+                config.ramQuantity = 1;
+                
+                document.getElementById('ramQuantity').textContent = config.ramQuantity;
+                document.getElementById('ramLabel').textContent = baseRam + ' ГБ';
+                
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для кнопок количества ядер (шаг 2)
+        document.querySelectorAll('.cores-section .quantity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const isPlus = this.classList.contains('plus');
+                const maxCores = config.cpuType === 'full-cpu' ? 16 : 32;
+                
+                if (isPlus && config.cores < maxCores) {
+                    config.cores += 2;
+                }
+                if (!isPlus && config.cores > 2) {
+                    config.cores -= 2;
+                }
+                
+                // Обновляем базовый объем RAM для 100% CPU
+                if (config.cpuType === 'full-cpu') {
+                    const baseRam = getBaseRam(config.cpuType, config.cores);
+                    config.ram = baseRam;
+                    config.ramQuantity = 1;
+                    document.getElementById('ramQuantity').textContent = config.ramQuantity;
+                    document.getElementById('ramLabel').textContent = baseRam + ' ГБ';
+                }
+                
+                document.getElementById('coresQuantity').textContent = config.cores;
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для кнопок количества RAM
+        document.querySelectorAll('#configurator-server + .configurator-container .quantity-btn[data-type="ram"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const isPlus = this.classList.contains('plus');
+                const maxRam = config.cpuType === 'full-cpu' ? 256 : 128;
+                
+                if (isPlus && config.ramQuantity < maxRam) {
+                    config.ramQuantity++;
+                }
+                if (!isPlus && config.ramQuantity > 1) {
+                    config.ramQuantity--;
+                }
+                
+                document.getElementById('ramQuantity').textContent = config.ramQuantity;
+                document.getElementById('ramLabel').textContent = (config.ram * config.ramQuantity) + ' ГБ';
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для кнопок количества хранилища серверных мощностей
+        document.querySelectorAll('#configurator-server + .configurator-container .quantity-btn[data-type="storage"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const isPlus = this.classList.contains('plus');
+                
+                if (isPlus && config.storageQuantity < 100) {
+                    config.storageQuantity++;
+                }
+                if (!isPlus && config.storageQuantity > 1) {
+                    config.storageQuantity--;
+                }
+                
+                document.getElementById('storageQuantity').textContent = config.storageQuantity;
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для типа хранилища серверных мощностей
+        document.querySelectorAll('.storage-option-server').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.storage-option-server').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                config.storageType = this.dataset.type;
+                config.storagePrice = parseInt(this.dataset.price);
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для резервного копирования серверных мощностей
+        document.querySelectorAll('.backup-option-server').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.backup-option-server').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                config.backup = this.dataset.backup;
+                config.backupMultiplier = parseFloat(this.dataset.multiplier);
+                config.backupAdditional = parseInt(this.dataset.additional);
+                updateDisplay();
+            });
+        });
+
+        // Обработчики для типа хранилища дискового пространства
+        document.querySelectorAll('.storage-option-disk').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.storage-option-disk').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                storageConfig.storageType = this.dataset.type;
+                storageConfig.storagePrice = parseInt(this.dataset.price);
+                updateStorageDisplay();
+            });
+        });
+
+        // Обработчики для кнопок количества хранилища дискового пространства
+        document.querySelectorAll('#config-disk .quantity-btn[data-type="storage-space"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const isPlus = this.classList.contains('plus');
+                
+                if (isPlus && storageConfig.storageSpaceQuantity < 100) {
+                    storageConfig.storageSpaceQuantity++;
+                }
+                if (!isPlus && storageConfig.storageSpaceQuantity > 1) {
+                    storageConfig.storageSpaceQuantity--;
+                }
+                
+                document.getElementById('storageSpaceQuantity').textContent = storageConfig.storageSpaceQuantity;
+                updateStorageDisplay();
+            });
+        });
+
+        // Обработчики для резервного копирования дискового пространства
+        document.querySelectorAll('.backup-option-disk').forEach(option => {
+            option.addEventListener('click', function() {
+                document.querySelectorAll('.backup-option-disk').forEach(opt => opt.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                storageConfig.backup = this.dataset.backup;
+                storageConfig.backupMultiplier = parseFloat(this.dataset.multiplier);
+                storageConfig.backupAdditional = parseInt(this.dataset.additional);
+                updateStorageDisplay();
+            });
+        });
+
+        // Модальные окна для серверных мощностей
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModalBtn = document.getElementById('closeModal');
+        const orderBtn = document.getElementById('orderBtn');
+        const orderForm = document.getElementById('orderForm');
+
+        // Функция обновления модального окна серверных мощностей
+        function updateOrderModal() {
+            document.getElementById('orderProcessor').textContent = 'Xeon Gold 6244';
+            document.getElementById('orderCpuType').textContent = config.cpuType === 'vcpu' ? 'vCPU' : '100% CPU';
+            document.getElementById('orderCores').textContent = config.cores + ' ядер';
+            document.getElementById('orderRam').textContent = (config.ram * config.ramQuantity) + ' ГБ';
+            document.getElementById('orderStorage').textContent = (config.storage * config.storageQuantity) + ' ГБ ' + (config.storageType === 'nvme' ? 'NVMe' : 'SAS');
+            document.getElementById('orderBackupServer').textContent = getBackupName(config.backup);
+            document.getElementById('orderTotal').textContent = calculateTotal().toLocaleString('ru-RU') + ' ₽';
+        }
+
+        orderBtn.addEventListener('click', function() {
+            updateOrderModal();
+            modalOverlay.classList.add('active');
+        });
+
+        closeModalBtn.addEventListener('click', function() {
+            modalOverlay.classList.remove('active');
+        });
+
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === modalOverlay) {
+                modalOverlay.classList.remove('active');
+            }
+        });
+
+        // Модальные окна для дискового пространства
+        const storageModalOverlay = document.getElementById('storageModalOverlay');
+        const closeStorageModal = document.getElementById('closeStorageModal');
+        const orderStorageBtn = document.getElementById('orderStorageBtn');
+        const storageOrderForm = document.getElementById('storageOrderForm');
+
+        // Функция обновления модального окна дискового пространства
+        function updateStorageOrderModal() {
+            document.getElementById('orderStorageType').textContent = storageConfig.storageType === 'nvme' ? 'NVMe 200k IOPS' : 'SAS 10K';
+            document.getElementById('orderStorageSpace').textContent = (storageConfig.storageSpace * storageConfig.storageSpaceQuantity) + ' ГБ';
+            document.getElementById('orderBackup').textContent = getBackupName(storageConfig.backup);
+            document.getElementById('orderStorageTotal').textContent = calculateStorageTotal().toLocaleString('ru-RU') + ' ₽';
+        }
+
+        orderStorageBtn.addEventListener('click', function() {
+            updateStorageOrderModal();
+            storageModalOverlay.classList.add('active');
+        });
+
+        closeStorageModal.addEventListener('click', function() {
+            storageModalOverlay.classList.remove('active');
+        });
+
+        storageModalOverlay.addEventListener('click', function(e) {
+            if (e.target === storageModalOverlay) {
+                storageModalOverlay.classList.remove('active');
+            }
+        });
+
+        // Обработчики форм
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Заказ серверных мощностей отправлен! Мы свяжемся с вами в ближайшее время.');
+            modalOverlay.classList.remove('active');
+            orderForm.reset();
+        });
+
+        storageOrderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Заказ дискового пространства отправлен! Мы свяжемся с вами в ближайшее время.');
+            storageModalOverlay.classList.remove('active');
+            storageOrderForm.reset();
+        });
+
+        // Инициализация
+        updateDisplay();
+        updateStorageDisplay();
+    </script>
+</body>
+</html>
