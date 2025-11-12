@@ -74,6 +74,7 @@
         .processor-options {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 15px;
             margin-bottom: 25px;
         }
@@ -234,8 +235,14 @@
         .storage-options-server {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 15px;
             margin: 20px 0;
+        }
+
+        .storage-select-container {
+            display: flex;
+            gap: 15px;
         }
 
         .storage-option-server {
@@ -270,8 +277,14 @@
         .backup-options-server {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 10px;
             margin: 20px 0;
+        }
+
+        .backup-select-conteiner {
+            display: flex;
+            gap: 15px
         }
 
         .backup-option-server {
@@ -309,8 +322,14 @@
         .storage-options-disk {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 15px;
             margin: 20px 0;
+        }
+
+        .storage-select-conteiner {
+            display: flex;
+            gap:15px
         }
 
         .storage-option-disk {
@@ -340,6 +359,7 @@
         .backup-options-disk {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 15px;
             margin: 20px 0;
         }
@@ -350,7 +370,7 @@
             align-items: center;
             gap: 15px;
             background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
+            padding: 5px;
             border-radius: 15px;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -608,31 +628,35 @@
 
                    
                     <div class="storage-options-server">
-                         <h3>Тип хранилища:</h3>
-                        <div class="storage-option-server selected" data-type="nvme" data-price="12">
-                            <div><span>NVMe 200k IOPS</span></div>
-                            <div class="storage-price"><span>12 ₽/ГБ</span></div>
-                        </div>
-                        <div class="storage-option-server" data-type="sas" data-price="6">
-                            <div><span>SAS 10K</span></div>
-                            <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                        <h3>Тип хранилища:</h3>
+                        <div class="storage-select-container">
+                            <div class="storage-option-server selected" data-type="nvme" data-price="12">
+                                <div><span>NVMe 200k IOPS</span></div>
+                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                            </div>
+                            <div class="storage-option-server" data-type="sas" data-price="6">
+                                <div><span>SAS 10K</span></div>
+                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                            </div>
                         </div>
                     </div>
 
                     
                     <div class="backup-options-server">
                         <h3 class="backup-title-server">Резервное копирование:</h3>
-                        <div class="backup-option-server selected" data-backup="7days" data-multiplier="1">
-                            <div class="backup-name"><span>7 дней</span></div>
-                            <div class="backup-price"><span>включено</span></div>
-                        </div>
-                        <div class="backup-option-server" data-backup="14days" data-multiplier="1.25">
-                            <div class="backup-name"><span>14 дней</span></div>
-                            <div class="backup-price"><span>x1.25</span></div>
-                        </div>
-                        <div class="backup-option-server" data-backup="30days" data-multiplier="1.5">
-                            <div class="backup-name"><span>30 дней</span></div>
-                            <div class="backup-price"><span>x1.5</span></div>
+                        <div class="backup-select-conteiner">
+                            <div class="backup-option-server selected" data-backup="7days" data-multiplier="1">
+                                <div class="backup-name"><span>7 дней</span></div>
+                                <div class="backup-price"><span>включено</span></div>
+                            </div>
+                            <div class="backup-option-server" data-backup="14days" data-multiplier="1.25">
+                                <div class="backup-name"><span>14 дней</span></div>
+                                <div class="backup-price"><span>x1.25</span></div>
+                            </div>
+                            <div class="backup-option-server" data-backup="30days" data-multiplier="1.5">
+                                <div class="backup-name"><span>30 дней</span></div>
+                                <div class="backup-price"><span>x1.5</span></div>
+                            </div>
                         </div>
                     </div>
 
@@ -717,13 +741,15 @@
                     
                     <div class="storage-options-disk">
                         <h3>Тип хранилища:</h3>
-                        <div class="storage-option-disk selected" data-type="nvme" data-price="12">
-                            <div><span>NVMe 200k IOPS</span></div>
-                            <div class="storage-price"><span>12 ₽/ГБ</span></div>
-                        </div>
-                        <div class="storage-option-disk" data-type="sas" data-price="6">
-                            <div><span>SAS 10K</span></div>
-                            <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                        <div class="storage-select-conteiner">
+                            <div class="storage-option-disk selected" data-type="nvme" data-price="12">
+                                <div><span>NVMe 200k IOPS</span></div>
+                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                            </div>
+                            <div class="storage-option-disk" data-type="sas" data-price="6">
+                                <div><span>SAS 10K</span></div>
+                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                            </div>
                         </div>
                     </div>
 
@@ -741,17 +767,19 @@
                     
                     <div class="backup-options-disk">
                         <h3 class="backup-title-disk">Резервное копирование:</h3>
-                        <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1">
-                            <div class="backup-name"><span>7 дней</span></div>
-                            <div class="backup-price"><span>включено</span></div>
-                        </div>
-                        <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25">
-                            <div class="backup-name"><span>14 дней</span></div>
-                            <div class="backup-price"><span>x1.25</span></div>
-                        </div>
-                        <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5">
-                            <div class="backup-name"><span>30 дней</span></div>
-                            <div class="backup-price"><span>x1.5</span></div>
+                        <div class="backup-select-conteiner">
+                            <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1">
+                                <div class="backup-name"><span>7 дней</span></div>
+                                <div class="backup-price"><span>включено</span></div>
+                            </div>
+                            <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25">
+                                <div class="backup-name"><span>14 дней</span></div>
+                                <div class="backup-price"><span>x1.25</span></div>
+                            </div>
+                            <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5">
+                                <div class="backup-name"><span>30 дней</span></div>
+                                <div class="backup-price"><span>x1.5</span></div>
+                            </div>
                         </div>
                     </div>
 
