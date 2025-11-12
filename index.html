@@ -153,6 +153,8 @@
         .config-value {
             color: #00c6ff;
             margin: 0 15px;
+            min-width: 60px;
+            text-align: center;
         }
 
         .config-price {
@@ -165,42 +167,62 @@
         .config-controls {
             display: flex;
             align-items: center;
+            gap: 15px;
+            flex: 1;
+            max-width: 200px;
+        }
+
+        .slider-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
             gap: 10px;
         }
 
-        .quantity-btn {
+        .range-slider {
+            flex: 1;
+            height: 6px;
             background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: #fff;
-            width: 30px;
-            height: 30px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #00c6ff;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
             transition: all 0.3s ease;
         }
 
-        .quantity-btn:hover {
-            background: rgba(0, 198, 255, 0.3);
+        .range-slider::-webkit-slider-thumb:hover {
+            background: #0072ff;
+            transform: scale(1.1);
         }
 
-        .quantity-input {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #fff;
-            width: 60px;
-            height: 30px;
-            border-radius: 8px;
+        .range-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #00c6ff;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .range-slider::-moz-range-thumb:hover {
+            background: #0072ff;
+            transform: scale(1.1);
+        }
+
+        .slider-value {
+            color: #00c6ff;
+            font-weight: bold;
+            min-width: 50px;
             text-align: center;
-            font-size: 14px;
-        }
-
-        .quantity-input:focus {
-            outline: none;
-            border-color: #00c6ff;
         }
 
         .cores-section {
@@ -554,10 +576,10 @@
                         <div class="config-item">
                             <div class="config-label"><span>Ядра</span></div>
                             <div class="config-controls">
-                                <button class="quantity-btn minus" data-type="cores">-</button>
-                                <input type="number" class="quantity-input" id="coresInput" value="2" min="2" max="32" step="2">
-                                <span class="config-value">ядер</span>
-                                <button class="quantity-btn plus" data-type="cores">+</button>
+                                <div class="slider-container">
+                                    <input type="range" class="range-slider" id="coresSlider" min="2" max="32" step="2" value="2">
+                                    <span class="slider-value" id="coresValue">2 ядер</span>
+                                </div>
                             </div>
                             <div class="config-price"><span id="coresPrice">+500 ₽/мес</span></div>
                         </div>
@@ -567,10 +589,10 @@
                     <div class="config-item">
                         <div class="config-label"><span id="ramLabel">Память</span></div>
                         <div class="config-controls">
-                            <button class="quantity-btn minus" data-type="ram">-</button>
-                            <input type="number" class="quantity-input" id="ramInput" value="4" min="4" max="128">
-                            <span class="config-value">ГБ</span>
-                            <button class="quantity-btn plus" data-type="ram">+</button>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" id="ramSlider" min="4" max="512" step="4" value="4">
+                                <span class="slider-value" id="ramValue">4 ГБ</span>
+                            </div>
                         </div>
                         <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
                     </div>
@@ -579,10 +601,10 @@
                     <div class="config-item">
                         <div class="config-label"><span>Хранилище</span></div>
                         <div class="config-controls">
-                            <button class="quantity-btn minus" data-type="storage">-</button>
-                            <input type="number" class="quantity-input" id="storageInput" value="10" min="10" max="100">
-                            <span class="config-value">ГБ</span>
-                            <button class="quantity-btn plus" data-type="storage">+</button>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" id="storageSlider" min="10" max="2000" step="10" value="10">
+                                <span class="slider-value" id="storageValue">10 ГБ</span>
+                            </div>
                         </div>
                         <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
                     </div>
@@ -709,10 +731,10 @@
                     <div class="config-item">
                         <div class="config-label"><span>Объем</span></div>
                         <div class="config-controls">
-                            <button class="quantity-btn minus" data-type="storage-space">-</button>
-                            <input type="number" class="quantity-input" id="storageSpaceInput" value="10" min="10" max="100">
-                            <span class="config-value">ГБ</span>
-                            <button class="quantity-btn plus" data-type="storage-space">+</button>
+                            <div class="slider-container">
+                                <input type="range" class="range-slider" id="storageSpaceSlider" min="10" max="2000" step="10" value="10">
+                                <span class="slider-value" id="storageSpaceValue">10 ГБ</span>
+                            </div>
                         </div>
                         <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
                     </div>
@@ -839,13 +861,14 @@
             return cores * cpuPrice;
         }
 
-        // Функция получения базового объема RAM в зависимости от типа CPU и количества ядер
-        function getBaseRam(cpuType, cores) {
-            if (cpuType === 'full-cpu') {
-                return cores * 16; // 16 ГБ на ядро для 100% CPU
-            } else {
-                return 4; // 4 ГБ базово для vCPU
-            }
+        // Функция получения максимального объема RAM (16 ГБ на ядро)
+        function getMaxRam(cores) {
+            return cores * 16; // Максимум 16 ГБ на ядро для обоих типов CPU
+        }
+
+        // Функция получения минимального объема RAM (4 ГБ для обоих типов)
+        function getMinRam() {
+            return 4; // Минимум 4 ГБ для обоих типов CPU
         }
 
         // Функция расчета общей стоимости серверных мощностей
@@ -872,6 +895,30 @@
                 '30days': '30 дней'
             };
             return backups[type];
+        }
+
+        // Обновление ограничений памяти при изменении количества ядер
+        function updateRamLimits() {
+            const maxRam = getMaxRam(config.cores);
+            const minRam = getMinRam();
+            
+            // Обновляем ползунок памяти
+            document.getElementById('ramSlider').max = maxRam;
+            document.getElementById('ramSlider').min = minRam;
+            
+            // Если текущее значение памяти превышает новый максимум, уменьшаем его
+            if (config.ram > maxRam) {
+                config.ram = maxRam;
+                document.getElementById('ramSlider').value = maxRam;
+                document.getElementById('ramValue').textContent = maxRam + ' ГБ';
+            }
+            
+            // Если текущее значение памяти меньше нового минимума, увеличиваем его
+            if (config.ram < minRam) {
+                config.ram = minRam;
+                document.getElementById('ramSlider').value = minRam;
+                document.getElementById('ramValue').textContent = minRam + ' ГБ';
+            }
         }
 
         // Обновление отображения серверных мощностей
@@ -909,128 +956,51 @@
                 config.cpuType = this.dataset.cpuType;
                 config.cpuPrice = parseInt(this.dataset.price);
                 
-                // Обновляем базовый объем RAM (16 ГБ на ядро для 100% CPU)
-                const baseRam = getBaseRam(config.cpuType, config.cores);
-                config.ram = baseRam;
+                // Одинаковые настройки для обоих типов CPU
+                document.getElementById('ramSlider').step = 4; // Шаг 4 ГБ для обоих типов
                 
-                document.getElementById('ramInput').value = config.ram;
-                document.getElementById('ramLabel').textContent = 'Память';
+                // Обновляем ограничения для обоих типов CPU
+                if (config.cpuType === 'vcpu') {
+                    // Максимум 32 ядра для vCPU
+                    document.getElementById('coresSlider').max = 32;
+                } else {
+                    // Для 100% CPU максимум 16 ядер
+                    document.getElementById('coresSlider').max = 16;
+                    
+                    // Если текущие значения превышают лимиты, уменьшаем их
+                    if (config.cores > 16) {
+                        config.cores = 16;
+                        document.getElementById('coresSlider').value = 16;
+                        document.getElementById('coresValue').textContent = '16 ядер';
+                    }
+                }
                 
+                // Обновляем ограничения памяти
+                updateRamLimits();
                 updateDisplay();
             });
         });
 
-        // Обработчики для кнопок количества ядер
-        document.querySelectorAll('.cores-section .quantity-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const isPlus = this.classList.contains('plus');
-                const maxCores = config.cpuType === 'full-cpu' ? 16 : 32;
-                
-                if (isPlus && config.cores < maxCores) {
-                    config.cores += 2;
-                }
-                if (!isPlus && config.cores > 2) {
-                    config.cores -= 2;
-                }
-                
-                // Обновляем RAM при изменении количества ядер для 100% CPU
-                if (config.cpuType === 'full-cpu') {
-                    config.ram = config.cores * 16;
-                    document.getElementById('ramInput').value = config.ram;
-                }
-                
-                document.getElementById('coresInput').value = config.cores;
-                updateDisplay();
-            });
-        });
-
-        // Обработчик ввода для ядер
-        document.getElementById('coresInput').addEventListener('change', function() {
-            let value = parseInt(this.value);
-            const maxCores = config.cpuType === 'full-cpu' ? 16 : 32;
+        // Обработчики для ползунков серверных мощностей
+        document.getElementById('coresSlider').addEventListener('input', function() {
+            config.cores = parseInt(this.value);
+            document.getElementById('coresValue').textContent = config.cores + ' ядер';
             
-            // Округляем до четного числа
-            value = Math.round(value / 2) * 2;
-            value = Math.max(2, Math.min(maxCores, value));
+            // Обновляем ограничения памяти при изменении количества ядер
+            updateRamLimits();
             
-            config.cores = value;
-            
-            // Обновляем RAM при изменении количества ядер для 100% CPU
-            if (config.cpuType === 'full-cpu') {
-                config.ram = config.cores * 16;
-                document.getElementById('ramInput').value = config.ram;
-            }
-            
-            this.value = value;
             updateDisplay();
         });
 
-        // Обработчики для кнопок количества RAM
-        document.querySelectorAll('#configurator-server + .configurator-container .quantity-btn[data-type="ram"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const isPlus = this.classList.contains('plus');
-                const maxRam = config.cpuType === 'full-cpu' ? 256 : 128;
-                const minRam = config.cpuType === 'full-cpu' ? config.cores * 16 : 4;
-                
-                if (isPlus && config.ram < maxRam) {
-                    config.ram += config.cpuType === 'full-cpu' ? 16 : 4;
-                }
-                if (!isPlus && config.ram > minRam) {
-                    config.ram -= config.cpuType === 'full-cpu' ? 16 : 4;
-                }
-                
-                document.getElementById('ramInput').value = config.ram;
-                updateDisplay();
-            });
-        });
-
-        // Обработчик ввода для RAM
-        document.getElementById('ramInput').addEventListener('change', function() {
-            let value = parseInt(this.value);
-            const maxRam = config.cpuType === 'full-cpu' ? 256 : 128;
-            const minRam = config.cpuType === 'full-cpu' ? config.cores * 16 : 4;
-            
-            value = Math.max(minRam, Math.min(maxRam, value));
-            
-            // Округляем до кратного 16 для 100% CPU и до кратного 4 для vCPU
-            if (config.cpuType === 'full-cpu') {
-                value = Math.round(value / 16) * 16;
-            } else {
-                value = Math.round(value / 4) * 4;
-            }
-            
-            config.ram = value;
-            this.value = value;
+        document.getElementById('ramSlider').addEventListener('input', function() {
+            config.ram = parseInt(this.value);
+            document.getElementById('ramValue').textContent = config.ram + ' ГБ';
             updateDisplay();
         });
 
-        // Обработчики для кнопок количества хранилища серверных мощностей
-        document.querySelectorAll('#configurator-server + .configurator-container .quantity-btn[data-type="storage"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const isPlus = this.classList.contains('plus');
-                
-                if (isPlus && config.storage < 100) {
-                    config.storage += 10;
-                }
-                if (!isPlus && config.storage > 10) {
-                    config.storage -= 10;
-                }
-                
-                document.getElementById('storageInput').value = config.storage;
-                updateDisplay();
-            });
-        });
-
-        // Обработчик ввода для хранилища серверных мощностей
-        document.getElementById('storageInput').addEventListener('change', function() {
-            let value = parseInt(this.value);
-            value = Math.max(10, Math.min(100, value));
-            
-            // Округляем до кратного 10
-            value = Math.round(value / 10) * 10;
-            
-            config.storage = value;
-            this.value = value;
+        document.getElementById('storageSlider').addEventListener('input', function() {
+            config.storage = parseInt(this.value);
+            document.getElementById('storageValue').textContent = config.storage + ' ГБ';
             updateDisplay();
         });
 
@@ -1070,33 +1040,10 @@
             });
         });
 
-        // Обработчики для кнопок количества хранилища дискового пространства
-        document.querySelectorAll('#config-disk .quantity-btn[data-type="storage-space"]').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const isPlus = this.classList.contains('plus');
-                
-                if (isPlus && storageConfig.storageSpace < 100) {
-                    storageConfig.storageSpace += 10;
-                }
-                if (!isPlus && storageConfig.storageSpace > 10) {
-                    storageConfig.storageSpace -= 10;
-                }
-                
-                document.getElementById('storageSpaceInput').value = storageConfig.storageSpace;
-                updateStorageDisplay();
-            });
-        });
-
-        // Обработчик ввода для хранилища дискового пространства
-        document.getElementById('storageSpaceInput').addEventListener('change', function() {
-            let value = parseInt(this.value);
-            value = Math.max(10, Math.min(100, value));
-            
-            // Округляем до кратного 10
-            value = Math.round(value / 10) * 10;
-            
-            storageConfig.storageSpace = value;
-            this.value = value;
+        // Обработчик для ползунка дискового пространства
+        document.getElementById('storageSpaceSlider').addEventListener('input', function() {
+            storageConfig.storageSpace = parseInt(this.value);
+            document.getElementById('storageSpaceValue').textContent = storageConfig.storageSpace + ' ГБ';
             updateStorageDisplay();
         });
 
@@ -1189,6 +1136,7 @@
         });
 
         // Инициализация
+        updateRamLimits();
         updateDisplay();
         updateStorageDisplay();
     </script>
