@@ -576,7 +576,7 @@
                     <div class="processor-options">
                         <h3 class="processor-title">Процессор:</h3>
                         <div class="processor-option selected" data-processor="xeon-gold">
-                            <div class="processor-name"><span>Xeon Gold 6244</span></div>
+                            <div class="processor-name"><span>Xeon Gold 6244 2933MHz</span></div>
                         </div>
                         <div class="cpu-type-options">
                         <h3>Тип CPU:</h3>
@@ -601,7 +601,7 @@
                                     <span class="slider-value" id="coresValue">2 ядер</span>
                                 </div>
                             </div>
-                            <div class="config-price"><span id="coresPrice">+500 ₽/мес</span></div>
+                            <div class="config-price"><span id="coresPrice">500 ₽/мес</span></div>
                         </div>
                     </div>
                     <div class="config-item">
@@ -612,29 +612,55 @@
                                 <span class="slider-value" id="ramValue">4 ГБ</span>
                             </div>
                         </div>
-                        <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
+                        <div class="config-price"><span id="ramPrice">1 000 ₽/мес</span></div>
                     </div>
                     <div class="config-item">
-                        <div class="config-label"><span>Хранилище</span></div>
+                        <div class="config-label"><span>Хранилище 1</span></div>
                         <div class="config-controls">
                             <div class="slider-block">
                                 <input type="range" class="range-slider" id="storageSlider" min="10" max="2000" step="10" value="10">
                                 <span class="slider-value" id="storageValue">10 ГБ</span>
                             </div>
                         </div>
-                        <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
+                        <div class="config-price"><span id="storagePrice">120 ₽/мес</span></div>
                     </div>
 
                    
                     <div class="storage-options-server">
-                        <h3>Тип хранилища:</h3>
+                        <h3>Тип хранилища 1:</h3>
                         <div class="storage-select-container">
                             <div class="storage-option-server selected" data-type="nvme" data-price="12">
                                 <div><span>NVMe 200k IOPS</span></div>
                                 <div class="storage-price"><span>12 ₽/ГБ</span></div>
                             </div>
                             <div class="storage-option-server" data-type="sas" data-price="6">
-                                <div><span>SAS 10K</span></div>
+                                <div><span>SAS 10k IOPS</span></div>
+                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Хранилище 2 -->
+                    <div class="config-item">
+                        <div class="config-label"><span>Хранилище 2</span></div>
+                        <div class="config-controls">
+                            <div class="slider-block">
+                                <input type="range" class="range-slider" id="storage2Slider" min="0" max="2000" step="10" value="0">
+                                <span class="slider-value" id="storage2Value">0 ГБ</span>
+                            </div>
+                        </div>
+                        <div class="config-price"><span id="storage2Price">0 ₽/мес</span></div>
+                    </div>
+
+                    <div class="storage-options-server">
+                        <h3>Тип хранилища 2:</h3>
+                        <div class="storage-select-container">
+                            <div class="storage-option-server selected" data-type="nvme" data-price="12" data-storage="2">
+                                <div><span>NVMe 200k IOPS</span></div>
+                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                            </div>
+                            <div class="storage-option-server" data-type="sas" data-price="6" data-storage="2">
+                                <div><span>SAS 10k IOPS</span></div>
                                 <div class="storage-price"><span>6 ₽/ГБ</span></div>
                             </div>
                         </div>
@@ -694,8 +720,12 @@
                             <span id="orderRam">4 ГБ</span>
                         </div>
                         <div class="order-item">
-                            <span>Хранилище:</span>
+                            <span>Хранилище 1:</span>
                             <span id="orderStorage">10 ГБ NVMe</span>
+                        </div>
+                        <div class="order-item">
+                            <span>Хранилище 2:</span>
+                            <span id="orderStorage2">0 ГБ NVMe</span>
                         </div>
                         <div class="order-item">
                             <span>Резервное копирование:</span>
@@ -746,7 +776,7 @@
                                 <div class="storage-price"><span>12 ₽/ГБ</span></div>
                             </div>
                             <div class="storage-option-disk" data-type="sas" data-price="6">
-                                <div><span>SAS 10K</span></div>
+                                <div><span>SAS 10k IOPS</span></div>
                                 <div class="storage-price"><span>6 ₽/ГБ</span></div>
                             </div>
                         </div>
@@ -760,7 +790,7 @@
                                 <span class="slider-value" id="storageSpaceValue">10 ГБ</span>
                             </div>
                         </div>
-                        <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
+                        <div class="config-price"><span id="storageSpacePrice">120 ₽/мес</span></div>
                     </div>
 
                     
@@ -852,8 +882,11 @@
             cores: 2,
             ram: 4,
             storage: 10,
+            storage2: 0,
             storageType: 'nvme',
+            storage2Type: 'nvme',
             storagePrice: 12,
+            storage2Price: 12,
             backup: '7days',
             backupMultiplier: 1
         };
@@ -902,9 +935,10 @@
         function calculateTotal() {
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram, config.cpuType);
-            const storageCost = config.storagePrice * config.storage * config.backupMultiplier;
+            const storage1Cost = config.storagePrice * config.storage * config.backupMultiplier;
+            const storage2Cost = config.storage2Price * config.storage2 * config.backupMultiplier;
             
-            const total = coresCost + ramCost + storageCost;
+            const total = coresCost + ramCost + storage1Cost + storage2Cost;
             return total;
         }
 
@@ -953,11 +987,13 @@
             // Обновляем цены в левой колонке
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram, config.cpuType);
-            const storageCost = config.storagePrice * config.storage * config.backupMultiplier;
+            const storage1Cost = config.storagePrice * config.storage * config.backupMultiplier;
+            const storage2Cost = config.storage2Price * config.storage2 * config.backupMultiplier;
             
-            document.getElementById('coresPrice').textContent = '+' + coresCost + ' ₽/мес';
-            document.getElementById('ramPrice').textContent = '+' + ramCost + ' ₽/мес';
-            document.getElementById('storagePrice').textContent = '+' + Math.round(storageCost) + ' ₽/мес';
+            document.getElementById('coresPrice').textContent = coresCost + ' ₽/мес';
+            document.getElementById('ramPrice').textContent = ramCost + ' ₽/мес';
+            document.getElementById('storagePrice').textContent = Math.round(storage1Cost) + ' ₽/мес';
+            document.getElementById('storage2Price').textContent = Math.round(storage2Cost) + ' ₽/мес';
             
             // Обновляем общую стоимость
             const total = calculateTotal();
@@ -968,7 +1004,7 @@
         function updateStorageDisplay() {
             const totalStorageCost = storageConfig.storagePrice * storageConfig.storageSpace * storageConfig.backupMultiplier;
             
-            document.getElementById('storageSpacePrice').textContent = '+' + Math.round(totalStorageCost) + ' ₽/мес';
+            document.getElementById('storageSpacePrice').textContent = Math.round(totalStorageCost) + ' ₽/мес';
             
             const total = calculateStorageTotal();
             document.getElementById('totalStoragePrice').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽/мес';
@@ -1031,14 +1067,32 @@
             updateDisplay();
         });
 
+        // Обработчик для ползунка хранилища 2
+        document.getElementById('storage2Slider').addEventListener('input', function() {
+            config.storage2 = parseInt(this.value);
+            document.getElementById('storage2Value').textContent = config.storage2 + ' ГБ';
+            updateDisplay();
+        });
+
         // Обработчики для типа хранилища серверных мощностей
         document.querySelectorAll('.storage-option-server').forEach(option => {
             option.addEventListener('click', function() {
-                document.querySelectorAll('.storage-option-server').forEach(opt => opt.classList.remove('selected'));
-                this.classList.add('selected');
+                const storageType = this.dataset.storage || '1'; // По умолчанию хранилище 1
                 
-                config.storageType = this.dataset.type;
-                config.storagePrice = parseInt(this.dataset.price);
+                if (storageType === '1') {
+                    document.querySelectorAll('.storage-option-server:not([data-storage])').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    config.storageType = this.dataset.type;
+                    config.storagePrice = parseInt(this.dataset.price);
+                } else {
+                    document.querySelectorAll('.storage-option-server[data-storage="2"]').forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    config.storage2Type = this.dataset.type;
+                    config.storage2Price = parseInt(this.dataset.price);
+                }
+                
                 updateDisplay();
             });
         });
@@ -1099,6 +1153,7 @@
             document.getElementById('orderCores').textContent = config.cores + ' ядер';
             document.getElementById('orderRam').textContent = config.ram + ' ГБ';
             document.getElementById('orderStorage').textContent = config.storage + ' ГБ ' + (config.storageType === 'nvme' ? 'NVMe' : 'SAS');
+            document.getElementById('orderStorage2').textContent = config.storage2 + ' ГБ ' + (config.storage2Type === 'nvme' ? 'NVMe' : 'SAS');
             document.getElementById('orderBackupServer').textContent = getBackupName(config.backup);
             document.getElementById('orderTotal').textContent = Math.round(calculateTotal()).toLocaleString('ru-RU') + ' ₽/мес';
         }
