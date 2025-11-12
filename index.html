@@ -57,7 +57,6 @@
         }
 
         .selection-section {
-            
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -230,7 +229,43 @@
             margin: 25px 0;
         }
 
-        /* Стили для хранилища серверных мощностей */
+        /* Стили для хранилищ */
+        .storage-container {
+            margin-bottom: 20px;
+        }
+
+        .storage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .storage-title {
+            font-weight: bold;
+            color: #00c6ff;
+        }
+
+        .remove-storage {
+            background: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-storage:hover {
+            background: #ff0000;
+            transform: scale(1.1);
+        }
+
         .storage-options-server {
             display: flex;
             align-items: center;
@@ -270,6 +305,38 @@
         .storage-price {
             color: #00c6ff;
             font-weight: bold;
+        }
+
+        /* Стили для кнопки добавления хранилища */
+        .add-storage-btn {
+            background: rgba(0, 198, 255, 0.2);
+            color: #00c6ff;
+            border: 2px dashed #00c6ff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .add-storage-btn:hover {
+            background: rgba(0, 198, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .add-storage-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .add-storage-btn.disabled:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Стили для резервного копирования серверных мощностей */
@@ -614,56 +681,44 @@
                         </div>
                         <div class="config-price"><span id="ramPrice">1 000 ₽/мес</span></div>
                     </div>
-                    <div class="config-item">
-                        <div class="config-label"><span>Хранилище 1</span></div>
-                        <div class="config-controls">
-                            <div class="slider-block">
-                                <input type="range" class="range-slider" id="storageSlider" min="10" max="2000" step="10" value="10">
-                                <span class="slider-value" id="storageValue">10 ГБ</span>
+                    
+                    <!-- Контейнер для динамически добавляемых хранилищ -->
+                    <div id="storagesContainer">
+                        <!-- Хранилище 1 (базовое) -->
+                        <div class="storage-container" data-storage-id="1">
+                            <div class="storage-header">
+                                <div class="storage-title">Хранилище 1</div>
+                                <button class="remove-storage" style="display: none;">×</button>
+                            </div>
+                            <div class="config-item">
+                                <div class="config-label"><span>Объем</span></div>
+                                <div class="config-controls">
+                                    <div class="slider-block">
+                                        <input type="range" class="range-slider storage-slider" data-storage-id="1" min="10" max="2000" step="10" value="10">
+                                        <span class="slider-value storage-value" data-storage-id="1">10 ГБ</span>
+                                    </div>
+                                </div>
+                                <div class="config-price"><span class="storage-price" data-storage-id="1">120 ₽/мес</span></div>
+                            </div>
+                            <div class="storage-options-server">
+                                <h3>Тип хранилища:</h3>
+                                <div class="storage-select-container">
+                                    <div class="storage-option-server selected" data-type="nvme" data-price="12" data-storage-id="1">
+                                        <div><span>NVMe 200k IOPS</span></div>
+                                        <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                                    </div>
+                                    <div class="storage-option-server" data-type="sas" data-price="6" data-storage-id="1">
+                                        <div><span>SAS 10k IOPS</span></div>
+                                        <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="config-price"><span id="storagePrice">120 ₽/мес</span></div>
                     </div>
-
-                   
-                    <div class="storage-options-server">
-                        <h3>Тип хранилища 1:</h3>
-                        <div class="storage-select-container">
-                            <div class="storage-option-server selected" data-type="nvme" data-price="12">
-                                <div><span>NVMe 200k IOPS</span></div>
-                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
-                            </div>
-                            <div class="storage-option-server" data-type="sas" data-price="6">
-                                <div><span>SAS 10k IOPS</span></div>
-                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Хранилище 2 -->
-                    <div class="config-item">
-                        <div class="config-label"><span>Хранилище 2</span></div>
-                        <div class="config-controls">
-                            <div class="slider-block">
-                                <input type="range" class="range-slider" id="storage2Slider" min="0" max="2000" step="10" value="0">
-                                <span class="slider-value" id="storage2Value">0 ГБ</span>
-                            </div>
-                        </div>
-                        <div class="config-price"><span id="storage2Price">0 ₽/мес</span></div>
-                    </div>
-
-                    <div class="storage-options-server">
-                        <h3>Тип хранилища 2:</h3>
-                        <div class="storage-select-container">
-                            <div class="storage-option-server selected" data-type="nvme" data-price="12" data-storage="2">
-                                <div><span>NVMe 200k IOPS</span></div>
-                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
-                            </div>
-                            <div class="storage-option-server" data-type="sas" data-price="6" data-storage="2">
-                                <div><span>SAS 10k IOPS</span></div>
-                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
-                            </div>
-                        </div>
+                    
+                    <!-- Кнопка добавления хранилища -->
+                    <div class="add-storage-btn" id="addStorageBtn">
+                        + Добавить хранилище
                     </div>
 
                     
@@ -702,39 +757,8 @@
                         <button class="close-modal" id="closeModal">×</button>
                     </div>
                     
-                    <div class="order-summary">
-                        <div class="order-item">
-                            <span>Процессор:</span>
-                            <span id="orderProcessor">Xeon Gold 6244</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Тип CPU:</span>
-                            <span id="orderCpuType">vCPU</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Количество ядер:</span>
-                            <span id="orderCores">2 ядер</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Оперативная память:</span>
-                            <span id="orderRam">4 ГБ</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Хранилище 1:</span>
-                            <span id="orderStorage">10 ГБ NVMe</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Хранилище 2:</span>
-                            <span id="orderStorage2">0 ГБ NVMe</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Резервное копирование:</span>
-                            <span id="orderBackupServer">7 дней</span>
-                        </div>
-                        <div class="order-total">
-                            <span>Итого в месяц:</span>
-                            <span id="orderTotal">1 620 ₽/мес</span>
-                        </div>
+                    <div class="order-summary" id="orderSummary">
+                        <!-- Содержимое будет заполнено динамически -->
                     </div>
 
                     <form id="orderForm">
@@ -881,12 +905,14 @@
             cpuPrice: 250,
             cores: 2,
             ram: 4,
-            storage: 10,
-            storage2: 0,
-            storageType: 'nvme',
-            storage2Type: 'nvme',
-            storagePrice: 12,
-            storage2Price: 12,
+            storages: [
+                {
+                    id: 1,
+                    size: 10,
+                    type: 'nvme',
+                    price: 12
+                }
+            ],
             backup: '7days',
             backupMultiplier: 1
         };
@@ -899,6 +925,9 @@
             backup: '7days',
             backupMultiplier: 1
         };
+
+        // Максимальное количество хранилищ
+        const MAX_STORAGES = 4;
 
         // Функция расчета стоимости RAM в зависимости от типа CPU и объема
         function calculateRamPrice(ramGB, cpuType) {
@@ -935,10 +964,13 @@
         function calculateTotal() {
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram, config.cpuType);
-            const storage1Cost = config.storagePrice * config.storage * config.backupMultiplier;
-            const storage2Cost = config.storage2Price * config.storage2 * config.backupMultiplier;
             
-            const total = coresCost + ramCost + storage1Cost + storage2Cost;
+            let storageCost = 0;
+            config.storages.forEach(storage => {
+                storageCost += storage.price * storage.size * config.backupMultiplier;
+            });
+            
+            const total = coresCost + ramCost + storageCost;
             return total;
         }
 
@@ -987,13 +1019,15 @@
             // Обновляем цены в левой колонке
             const coresCost = calculateCoresPrice(config.cores, config.cpuPrice);
             const ramCost = calculateRamPrice(config.ram, config.cpuType);
-            const storage1Cost = config.storagePrice * config.storage * config.backupMultiplier;
-            const storage2Cost = config.storage2Price * config.storage2 * config.backupMultiplier;
             
             document.getElementById('coresPrice').textContent = coresCost + ' ₽/мес';
             document.getElementById('ramPrice').textContent = ramCost + ' ₽/мес';
-            document.getElementById('storagePrice').textContent = Math.round(storage1Cost) + ' ₽/мес';
-            document.getElementById('storage2Price').textContent = Math.round(storage2Cost) + ' ₽/мес';
+            
+            // Обновляем цены для каждого хранилища
+            config.storages.forEach(storage => {
+                const storageCost = storage.price * storage.size * config.backupMultiplier;
+                document.querySelector(`.storage-price[data-storage-id="${storage.id}"]`).textContent = Math.round(storageCost) + ' ₽/мес';
+            });
             
             // Обновляем общую стоимость
             const total = calculateTotal();
@@ -1008,6 +1042,146 @@
             
             const total = calculateStorageTotal();
             document.getElementById('totalStoragePrice').textContent = Math.round(total).toLocaleString('ru-RU') + ' ₽/мес';
+        }
+
+        // Функция добавления нового хранилища
+        function addStorage() {
+            if (config.storages.length >= MAX_STORAGES) {
+                return;
+            }
+            
+            const newStorageId = config.storages.length + 1;
+            
+            // Создаем новый объект хранилища
+            const newStorage = {
+                id: newStorageId,
+                size: 10,
+                type: 'nvme',
+                price: 12
+            };
+            
+            config.storages.push(newStorage);
+            
+            // Создаем HTML для нового хранилища
+            const storageHTML = `
+                <div class="storage-container" data-storage-id="${newStorageId}">
+                    <div class="storage-header">
+                        <div class="storage-title">Хранилище ${newStorageId}</div>
+                        <button class="remove-storage">×</button>
+                    </div>
+                    <div class="config-item">
+                        <div class="config-label"><span>Объем</span></div>
+                        <div class="config-controls">
+                            <div class="slider-block">
+                                <input type="range" class="range-slider storage-slider" data-storage-id="${newStorageId}" min="10" max="2000" step="10" value="10">
+                                <span class="slider-value storage-value" data-storage-id="${newStorageId}">10 ГБ</span>
+                            </div>
+                        </div>
+                        <div class="config-price"><span class="storage-price" data-storage-id="${newStorageId}">120 ₽/мес</span></div>
+                    </div>
+                    <div class="storage-options-server">
+                        <h3>Тип хранилища:</h3>
+                        <div class="storage-select-container">
+                            <div class="storage-option-server selected" data-type="nvme" data-price="12" data-storage-id="${newStorageId}">
+                                <div><span>NVMe 200k IOPS</span></div>
+                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                            </div>
+                            <div class="storage-option-server" data-type="sas" data-price="6" data-storage-id="${newStorageId}">
+                                <div><span>SAS 10k IOPS</span></div>
+                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Вставляем новое хранилище перед кнопкой добавления
+            document.getElementById('addStorageBtn').insertAdjacentHTML('beforebegin', storageHTML);
+            
+            // Добавляем обработчики событий для нового хранилища
+            addStorageEventListeners(newStorageId);
+            
+            // Обновляем состояние кнопки добавления
+            updateAddStorageButton();
+            
+            // Обновляем отображение
+            updateDisplay();
+        }
+
+        // Функция удаления хранилища
+        function removeStorage(storageId) {
+            if (storageId === 1) {
+                // Не удаляем первое хранилище, просто сбрасываем его
+                const storage = config.storages.find(s => s.id === storageId);
+                storage.size = 10;
+                storage.type = 'nvme';
+                storage.price = 12;
+                
+                // Сбрасываем UI
+                document.querySelector(`.storage-slider[data-storage-id="${storageId}"]`).value = 10;
+                document.querySelector(`.storage-value[data-storage-id="${storageId}"]`).textContent = '10 ГБ';
+                
+                // Сбрасываем тип хранилища
+                document.querySelectorAll(`.storage-option-server[data-storage-id="${storageId}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                document.querySelector(`.storage-option-server[data-storage-id="${storageId}"][data-type="nvme"]`).classList.add('selected');
+                
+                // Скрываем кнопку удаления для первого хранилища
+                document.querySelector(`.storage-container[data-storage-id="${storageId}"] .remove-storage`).style.display = 'none';
+            } else {
+                // Удаляем хранилище из конфигурации
+                config.storages = config.storages.filter(s => s.id !== storageId);
+                
+                // Удаляем HTML элемент
+                document.querySelector(`.storage-container[data-storage-id="${storageId}"]`).remove();
+                
+                // Обновляем состояние кнопки добавления
+                updateAddStorageButton();
+            }
+            
+            // Обновляем отображение
+            updateDisplay();
+        }
+
+        // Функция обновления состояния кнопки добавления хранилища
+        function updateAddStorageButton() {
+            const addBtn = document.getElementById('addStorageBtn');
+            if (config.storages.length >= MAX_STORAGES) {
+                addBtn.classList.add('disabled');
+            } else {
+                addBtn.classList.remove('disabled');
+            }
+        }
+
+        // Функция добавления обработчиков событий для хранилища
+        function addStorageEventListeners(storageId) {
+            // Обработчик для ползунка объема хранилища
+            document.querySelector(`.storage-slider[data-storage-id="${storageId}"]`).addEventListener('input', function() {
+                const storage = config.storages.find(s => s.id === storageId);
+                storage.size = parseInt(this.value);
+                document.querySelector(`.storage-value[data-storage-id="${storageId}"]`).textContent = storage.size + ' ГБ';
+                updateDisplay();
+            });
+            
+            // Обработчики для типа хранилища
+            document.querySelectorAll(`.storage-option-server[data-storage-id="${storageId}"]`).forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll(`.storage-option-server[data-storage-id="${storageId}"]`).forEach(opt => opt.classList.remove('selected'));
+                    this.classList.add('selected');
+                    
+                    const storage = config.storages.find(s => s.id === storageId);
+                    storage.type = this.dataset.type;
+                    storage.price = parseInt(this.dataset.price);
+                    
+                    updateDisplay();
+                });
+            });
+            
+            // Обработчик для кнопки удаления хранилища
+            document.querySelector(`.storage-container[data-storage-id="${storageId}"] .remove-storage`).addEventListener('click', function() {
+                removeStorage(storageId);
+            });
         }
 
         // Обработчики для типа CPU
@@ -1061,42 +1235,6 @@
             updateDisplay();
         });
 
-        document.getElementById('storageSlider').addEventListener('input', function() {
-            config.storage = parseInt(this.value);
-            document.getElementById('storageValue').textContent = config.storage + ' ГБ';
-            updateDisplay();
-        });
-
-        // Обработчик для ползунка хранилища 2
-        document.getElementById('storage2Slider').addEventListener('input', function() {
-            config.storage2 = parseInt(this.value);
-            document.getElementById('storage2Value').textContent = config.storage2 + ' ГБ';
-            updateDisplay();
-        });
-
-        // Обработчики для типа хранилища серверных мощностей
-        document.querySelectorAll('.storage-option-server').forEach(option => {
-            option.addEventListener('click', function() {
-                const storageType = this.dataset.storage || '1'; // По умолчанию хранилище 1
-                
-                if (storageType === '1') {
-                    document.querySelectorAll('.storage-option-server:not([data-storage])').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    config.storageType = this.dataset.type;
-                    config.storagePrice = parseInt(this.dataset.price);
-                } else {
-                    document.querySelectorAll('.storage-option-server[data-storage="2"]').forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    config.storage2Type = this.dataset.type;
-                    config.storage2Price = parseInt(this.dataset.price);
-                }
-                
-                updateDisplay();
-            });
-        });
-
         // Обработчики для резервного копирования серверных мощностей
         document.querySelectorAll('.backup-option-server').forEach(option => {
             option.addEventListener('click', function() {
@@ -1140,6 +1278,13 @@
             });
         });
 
+        // Обработчик для кнопки добавления хранилища
+        document.getElementById('addStorageBtn').addEventListener('click', function() {
+            if (!this.classList.contains('disabled')) {
+                addStorage();
+            }
+        });
+
         // Модальные окна для серверных мощностей
         const modalOverlay = document.getElementById('modalOverlay');
         const closeModalBtn = document.getElementById('closeModal');
@@ -1148,14 +1293,48 @@
 
         // Функция обновления модального окна серверных мощностей
         function updateOrderModal() {
-            document.getElementById('orderProcessor').textContent = 'Xeon Gold 6244';
-            document.getElementById('orderCpuType').textContent = config.cpuType === 'vcpu' ? 'vCPU' : '100% CPU';
-            document.getElementById('orderCores').textContent = config.cores + ' ядер';
-            document.getElementById('orderRam').textContent = config.ram + ' ГБ';
-            document.getElementById('orderStorage').textContent = config.storage + ' ГБ ' + (config.storageType === 'nvme' ? 'NVMe' : 'SAS');
-            document.getElementById('orderStorage2').textContent = config.storage2 + ' ГБ ' + (config.storage2Type === 'nvme' ? 'NVMe' : 'SAS');
-            document.getElementById('orderBackupServer').textContent = getBackupName(config.backup);
-            document.getElementById('orderTotal').textContent = Math.round(calculateTotal()).toLocaleString('ru-RU') + ' ₽/мес';
+            const orderSummary = document.getElementById('orderSummary');
+            let summaryHTML = `
+                <div class="order-item">
+                    <span>Процессор:</span>
+                    <span>Xeon Gold 6244</span>
+                </div>
+                <div class="order-item">
+                    <span>Тип CPU:</span>
+                    <span>${config.cpuType === 'vcpu' ? 'vCPU' : '100% CPU'}</span>
+                </div>
+                <div class="order-item">
+                    <span>Количество ядер:</span>
+                    <span>${config.cores} ядер</span>
+                </div>
+                <div class="order-item">
+                    <span>Оперативная память:</span>
+                    <span>${config.ram} ГБ</span>
+                </div>
+            `;
+            
+            // Добавляем информацию о хранилищах
+            config.storages.forEach(storage => {
+                summaryHTML += `
+                    <div class="order-item">
+                        <span>Хранилище ${storage.id}:</span>
+                        <span>${storage.size} ГБ ${storage.type === 'nvme' ? 'NVMe' : 'SAS'}</span>
+                    </div>
+                `;
+            });
+            
+            summaryHTML += `
+                <div class="order-item">
+                    <span>Резервное копирование:</span>
+                    <span>${getBackupName(config.backup)}</span>
+                </div>
+                <div class="order-total">
+                    <span>Итого в месяц:</span>
+                    <span>${Math.round(calculateTotal()).toLocaleString('ru-RU')} ₽/мес</span>
+                </div>
+            `;
+            
+            orderSummary.innerHTML = summaryHTML;
         }
 
         orderBtn.addEventListener('click', function() {
@@ -1218,9 +1397,17 @@
         });
 
         // Инициализация
-        updateRamLimits();
-        updateDisplay();
-        updateStorageDisplay();
+        function init() {
+            updateRamLimits();
+            updateDisplay();
+            updateStorageDisplay();
+            updateAddStorageButton();
+            
+            // Добавляем обработчики для первого хранилища
+            addStorageEventListeners(1);
+        }
+
+        init();
     </script>
 </body>
 </html>
