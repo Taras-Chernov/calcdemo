@@ -29,8 +29,16 @@
             padding: 20px 0;
         }
 
+        .order-conteiner {
+            display: grid;
+            align-items: flex-start;
+            grid-template-columns: 1fr 1fr;
+            gap:15px
+        }
+
         .configurator-container {
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             gap: 20px;
             padding: 20px 0;
@@ -170,7 +178,7 @@
             align-items: center;
             gap: 15px;
             flex: 1;
-            max-width: 100%;
+            max-width: 50%;
         }
 
         .slider-block {
@@ -566,278 +574,279 @@
 <body>
     <section class="order">
         <div class="wrapper">
-            <!-- КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ -->
-            <div class="configurator-header" id="configurator-server">
-                <h2 id="configurator">КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ</h2>
-            </div>
-            <div class="configurator-container">
-                <!-- Левый столбец - Выбор конфигурации -->
-                <div class="selection-section"> 
-                    <div class="processor-options">
-                        <h3 class="processor-title">Процессор:</h3>
-                        <div class="processor-option selected" data-processor="xeon-gold">
-                            <div class="processor-name"><span>Xeon Gold 6244</span></div>
-                        </div>
-                        <div class="cpu-type-options">
-                        <h3>Тип CPU:</h3>
-                        <div class="cpu-type-option selected" data-cpu-type="vcpu" data-price="250">
-                            <div><span>vCPU</span></div>
-                            <div class="cpu-type-price"><span>250 ₽/ядро</span></div>
-                        </div>
-                        <div class="cpu-type-option" data-cpu-type="full-cpu" data-price="2000">
-                            <div><span>100% CPU</span></div>
-                            <div class="cpu-type-price"><span>2 000 ₽/ядро</span></div>
-                        </div>
+            <div class="order-conteiner">
+                <div class="configurator-container">
+                        <!-- КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ -->
+                    <div class="configurator-header" id="configurator-server">
+                        <h2 id="configurator">КОНФИГУРАТОР СЕРВЕРНЫХ МОЩНОСТЕЙ</h2>
                     </div>
-                    </div>
-                    
+                    <div class="selection-section"> 
+                        <div class="processor-options">
+                            <h3 class="processor-title">Процессор:</h3>
+                            <div class="processor-option selected" data-processor="xeon-gold">
+                                <div class="processor-name"><span>Xeon Gold 6244</span></div>
+                            </div>
+                            <div class="cpu-type-options">
+                            <h3>Тип CPU:</h3>
+                            <div class="cpu-type-option selected" data-cpu-type="vcpu" data-price="250">
+                                <div><span>vCPU</span></div>
+                                <div class="cpu-type-price"><span>250 ₽/ядро</span></div>
+                            </div>
+                            <div class="cpu-type-option" data-cpu-type="full-cpu" data-price="2000">
+                                <div><span>100% CPU</span></div>
+                                <div class="cpu-type-price"><span>2 000 ₽/ядро</span></div>
+                            </div>
+                        </div>
+                        </div>
+                        
 
-                    <div class="cores-section">
+                        <div class="cores-section">
+                            <div class="config-item">
+                                <div class="config-label"><span>Ядра</span></div>
+                                <div class="config-controls">
+                                    <div class="slider-block">
+                                        <input type="range" class="range-slider" id="coresSlider" min="2" max="32" step="2" value="2">
+                                        <span class="slider-value" id="coresValue">2 ядер</span>
+                                    </div>
+                                </div>
+                                <div class="config-price"><span id="coresPrice">+500 ₽/мес</span></div>
+                            </div>
+                        </div>
                         <div class="config-item">
-                            <div class="config-label"><span>Ядра</span></div>
+                            <div class="config-label"><span id="ramLabel">Память</span></div>
                             <div class="config-controls">
                                 <div class="slider-block">
-                                    <input type="range" class="range-slider" id="coresSlider" min="2" max="32" step="2" value="2">
-                                    <span class="slider-value" id="coresValue">2 ядер</span>
+                                    <input type="range" class="range-slider" id="ramSlider" min="4" max="512" step="4" value="4">
+                                    <span class="slider-value" id="ramValue">4 ГБ</span>
                                 </div>
                             </div>
-                            <div class="config-price"><span id="coresPrice">+500 ₽/мес</span></div>
+                            <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
                         </div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label"><span id="ramLabel">Память</span></div>
-                        <div class="config-controls">
-                            <div class="slider-block">
-                                <input type="range" class="range-slider" id="ramSlider" min="4" max="512" step="4" value="4">
-                                <span class="slider-value" id="ramValue">4 ГБ</span>
+                        <div class="config-item">
+                            <div class="config-label"><span>Хранилище</span></div>
+                            <div class="config-controls">
+                                <div class="slider-block">
+                                    <input type="range" class="range-slider" id="storageSlider" min="10" max="2000" step="10" value="10">
+                                    <span class="slider-value" id="storageValue">10 ГБ</span>
+                                </div>
                             </div>
+                            <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
                         </div>
-                        <div class="config-price"><span id="ramPrice">+1 000 ₽/мес</span></div>
-                    </div>
-                    <div class="config-item">
-                        <div class="config-label"><span>Хранилище</span></div>
-                        <div class="config-controls">
-                            <div class="slider-block">
-                                <input type="range" class="range-slider" id="storageSlider" min="10" max="2000" step="10" value="10">
-                                <span class="slider-value" id="storageValue">10 ГБ</span>
-                            </div>
-                        </div>
-                        <div class="config-price"><span id="storagePrice">+120 ₽/мес</span></div>
-                    </div>
 
+                    
+                        <div class="storage-options-server">
+                            <h3>Тип хранилища:</h3>
+                            <div class="storage-select-container">
+                                <div class="storage-option-server selected" data-type="nvme" data-price="12">
+                                    <div><span>NVMe 200k IOPS</span></div>
+                                    <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                                </div>
+                                <div class="storage-option-server" data-type="sas" data-price="6">
+                                    <div><span>SAS 10K</span></div>
+                                    <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="backup-options-server">
+                            <h3 class="backup-title-server">Резервное копирование:</h3>
+                            <div class="backup-select-conteiner">
+                                <div class="backup-option-server selected" data-backup="7days" data-multiplier="1">
+                                    <div class="backup-name"><span>7 дней</span></div>
+                                    <div class="backup-price"><span>включено</span></div>
+                                </div>
+                                <div class="backup-option-server" data-backup="14days" data-multiplier="1.25">
+                                    <div class="backup-name"><span>14 дней</span></div>
+                                    <div class="backup-price"><span>x1.25</span></div>
+                                </div>
+                                <div class="backup-option-server" data-backup="30days" data-multiplier="1.5">
+                                    <div class="backup-name"><span>30 дней</span></div>
+                                    <div class="backup-price"><span>x1.5</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Итоговая секция для серверных мощностей -->
+                        <div class="total-section">
+                            <h3>Итого в месяц:</h3>
+                            <div class="total-price" id="totalPrice"><span>1 620 ₽/мес</span></div>
+                            <button class="order-btn" id="orderBtn">Заказать мощности</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Модальное окно заказа -->
+                <div class="modal-overlay" id="modalOverlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">Ваш заказ серверных мощностей</div>
+                            <button class="close-modal" id="closeModal">×</button>
+                        </div>
+                        
+                        <div class="order-summary">
+                            <div class="order-item">
+                                <span>Процессор:</span>
+                                <span id="orderProcessor">Xeon Gold 6244</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Тип CPU:</span>
+                                <span id="orderCpuType">vCPU</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Количество ядер:</span>
+                                <span id="orderCores">2 ядер</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Оперативная память:</span>
+                                <span id="orderRam">4 ГБ</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Хранилище:</span>
+                                <span id="orderStorage">10 ГБ NVMe</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Резервное копирование:</span>
+                                <span id="orderBackupServer">7 дней</span>
+                            </div>
+                            <div class="order-total">
+                                <span>Итого в месяц:</span>
+                                <span id="orderTotal">1 620 ₽/мес</span>
+                            </div>
+                        </div>
+
+                        <form id="orderForm">
+                            <div class="form-group">
+                                <label for="userName">Ваше имя *</label>
+                                <input type="text" id="userName" required placeholder="Иван Иванов">
+                            </div>
+                            <div class="form-group">
+                                <label for="userEmail">Email *</label>
+                                <input type="email" id="userEmail" required placeholder="ivan@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="userPhone">Телефон *</label>
+                                <input type="tel" id="userPhone" required placeholder="+7 (999) 999-99-99">
+                            </div>
+                            <div class="form-group">
+                                <label for="userComment">Комментарий к заказу</label>
+                                <textarea id="userComment" placeholder="Дополнительные пожелания или требования"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="submit-order">Отправить заказ</button>
+                        </form>
+                    </div>
+                </div>      
+                
                    
-                    <div class="storage-options-server">
-                        <h3>Тип хранилища:</h3>
-                        <div class="storage-select-container">
-                            <div class="storage-option-server selected" data-type="nvme" data-price="12">
-                                <div><span>NVMe 200k IOPS</span></div>
-                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
-                            </div>
-                            <div class="storage-option-server" data-type="sas" data-price="6">
-                                <div><span>SAS 10K</span></div>
-                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="backup-options-server">
-                        <h3 class="backup-title-server">Резервное копирование:</h3>
-                        <div class="backup-select-conteiner">
-                            <div class="backup-option-server selected" data-backup="7days" data-multiplier="1">
-                                <div class="backup-name"><span>7 дней</span></div>
-                                <div class="backup-price"><span>включено</span></div>
-                            </div>
-                            <div class="backup-option-server" data-backup="14days" data-multiplier="1.25">
-                                <div class="backup-name"><span>14 дней</span></div>
-                                <div class="backup-price"><span>x1.25</span></div>
-                            </div>
-                            <div class="backup-option-server" data-backup="30days" data-multiplier="1.5">
-                                <div class="backup-name"><span>30 дней</span></div>
-                                <div class="backup-price"><span>x1.5</span></div>
+                <div class="configurator-container" id="config-disk">
+                    <!-- КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА -->
+                    <div class="configurator-header">
+                        <h2>КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА</h2>
+                    </div> 
+                    <div class="selection-section">
+                        
+                        <div class="storage-options-disk">
+                            <h3>Тип хранилища:</h3>
+                            <div class="storage-select-conteiner">
+                                <div class="storage-option-disk selected" data-type="nvme" data-price="12">
+                                    <div><span>NVMe 200k IOPS</span></div>
+                                    <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                                </div>
+                                <div class="storage-option-disk" data-type="sas" data-price="6">
+                                    <div><span>SAS 10K</span></div>
+                                    <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Итоговая секция для серверных мощностей -->
-                    <div class="total-section">
-                        <h3>Итого в месяц:</h3>
-                        <div class="total-price" id="totalPrice"><span>1 620 ₽/мес</span></div>
-                        <button class="order-btn" id="orderBtn">Заказать мощности</button>
+                        <div class="config-item">
+                            <div class="config-label"><span>Объем:</span></div>
+                            <div class="config-controls">
+                                <div class="slider-block">
+                                    <input type="range" class="range-slider" id="storageSpaceSlider" min="10" max="2000" step="10" value="10">
+                                    <span class="slider-value" id="storageSpaceValue">10 ГБ</span>
+                                </div>
+                            </div>
+                            <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
+                        </div>
+
+                        
+                        <div class="backup-options-disk">
+                            <h3 class="backup-title-disk">Резервное копирование:</h3>
+                            <div class="backup-select-conteiner">
+                                <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1">
+                                    <div class="backup-name"><span>7 дней</span></div>
+                                    <div class="backup-price"><span>включено</span></div>
+                                </div>
+                                <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25">
+                                    <div class="backup-name"><span>14 дней</span></div>
+                                    <div class="backup-price"><span>x1.25</span></div>
+                                </div>
+                                <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5">
+                                    <div class="backup-name"><span>30 дней</span></div>
+                                    <div class="backup-price"><span>x1.5</span></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Итоговая секция для дискового пространства -->
+                        <div class="total-section">
+                            <h3>ИТОГО В МЕСЯЦ:</h3>
+                            <div class="total-price" id="totalStoragePrice"><span>120 ₽/мес</span></div>
+                            <button class="order-btn" id="orderStorageBtn">Заказать хранилище</button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Модальное окно заказа -->
-            <div class="modal-overlay" id="modalOverlay">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title">Ваш заказ серверных мощностей</div>
-                        <button class="close-modal" id="closeModal">×</button>
-                    </div>
-                    
-                    <div class="order-summary">
-                        <div class="order-item">
-                            <span>Процессор:</span>
-                            <span id="orderProcessor">Xeon Gold 6244</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Тип CPU:</span>
-                            <span id="orderCpuType">vCPU</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Количество ядер:</span>
-                            <span id="orderCores">2 ядер</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Оперативная память:</span>
-                            <span id="orderRam">4 ГБ</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Хранилище:</span>
-                            <span id="orderStorage">10 ГБ NVMe</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Резервное копирование:</span>
-                            <span id="orderBackupServer">7 дней</span>
-                        </div>
-                        <div class="order-total">
-                            <span>Итого в месяц:</span>
-                            <span id="orderTotal">1 620 ₽/мес</span>
-                        </div>
-                    </div>
-
-                    <form id="orderForm">
-                        <div class="form-group">
-                            <label for="userName">Ваше имя *</label>
-                            <input type="text" id="userName" required placeholder="Иван Иванов">
-                        </div>
-                        <div class="form-group">
-                            <label for="userEmail">Email *</label>
-                            <input type="email" id="userEmail" required placeholder="ivan@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="userPhone">Телефон *</label>
-                            <input type="tel" id="userPhone" required placeholder="+7 (999) 999-99-99">
-                        </div>
-                        <div class="form-group">
-                            <label for="userComment">Комментарий к заказу</label>
-                            <textarea id="userComment" placeholder="Дополнительные пожелания или требования"></textarea>
+                <!-- Модальное окно для заказа хранилища -->
+                <div class="modal-overlay" id="storageModalOverlay">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">Ваш заказ дискового пространства</div>
+                            <button class="close-modal" id="closeStorageModal">×</button>
                         </div>
                         
-                        <button type="submit" class="submit-order">Отправить заказ</button>
-                    </form>
-                </div>
-            </div>      
-            
-            <!-- КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА -->
-            <div class="configurator-header">
-                <h2>КОНФИГУРАТОР ДИСКОВОГО ПРОСТРАНСТВА</h2>
-            </div>    
-            <div class="configurator-container" id="config-disk">
-                <!-- Левый столбец - Выбор конфигурации -->
-                <div class="selection-section">
-                    
-                    <div class="storage-options-disk">
-                        <h3>Тип хранилища:</h3>
-                        <div class="storage-select-conteiner">
-                            <div class="storage-option-disk selected" data-type="nvme" data-price="12">
-                                <div><span>NVMe 200k IOPS</span></div>
-                                <div class="storage-price"><span>12 ₽/ГБ</span></div>
+                        <div class="order-summary">
+                            <div class="order-item">
+                                <span>Тип хранилища:</span>
+                                <span id="orderStorageType">NVMe 200k IOPS</span>
                             </div>
-                            <div class="storage-option-disk" data-type="sas" data-price="6">
-                                <div><span>SAS 10K</span></div>
-                                <div class="storage-price"><span>6 ₽/ГБ</span></div>
+                            <div class="order-item">
+                                <span>Объем:</span>
+                                <span id="orderStorageSpace">10 ГБ</span>
+                            </div>
+                            <div class="order-item">
+                                <span>Резервное копирование:</span>
+                                <span id="orderBackup">7 дней</span>
+                            </div>
+                            <div class="order-total">
+                                <span>Итого в месяц:</span>
+                                <span id="orderStorageTotal">120 ₽/мес</span>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="config-item">
-                        <div class="config-label"><span>Объем:</span></div>
-                        <div class="config-controls">
-                            <div class="slider-block">
-                                <input type="range" class="range-slider" id="storageSpaceSlider" min="10" max="2000" step="10" value="10">
-                                <span class="slider-value" id="storageSpaceValue">10 ГБ</span>
+                        <form id="storageOrderForm">
+                            <div class="form-group">
+                                <label for="storageUserName">Ваше имя *</label>
+                                <input type="text" id="storageUserName" required placeholder="Иван Иванов">
                             </div>
-                        </div>
-                        <div class="config-price"><span id="storageSpacePrice">+120 ₽/мес</span></div>
-                    </div>
-
-                    
-                    <div class="backup-options-disk">
-                        <h3 class="backup-title-disk">Резервное копирование:</h3>
-                        <div class="backup-select-conteiner">
-                            <div class="backup-option-disk selected" data-backup="7days" data-multiplier="1">
-                                <div class="backup-name"><span>7 дней</span></div>
-                                <div class="backup-price"><span>включено</span></div>
+                            <div class="form-group">
+                                <label for="storageUserEmail">Email *</label>
+                                <input type="email" id="storageUserEmail" required placeholder="ivan@example.com">
                             </div>
-                            <div class="backup-option-disk" data-backup="14days" data-multiplier="1.25">
-                                <div class="backup-name"><span>14 дней</span></div>
-                                <div class="backup-price"><span>x1.25</span></div>
+                            <div class="form-group">
+                                <label for="storageUserPhone">Телефон *</label>
+                                <input type="tel" id="storageUserPhone" required placeholder="+7 (999) 999-99-99">
                             </div>
-                            <div class="backup-option-disk" data-backup="30days" data-multiplier="1.5">
-                                <div class="backup-name"><span>30 дней</span></div>
-                                <div class="backup-price"><span>x1.5</span></div>
+                            <div class="form-group">
+                                <label for="storageUserComment">Комментарий к заказу</label>
+                                <textarea id="storageUserComment" placeholder="Дополнительные пожелания или требования"></textarea>
                             </div>
-                        </div>
+                            
+                            <button type="submit" class="submit-order">Отправить заказ</button>
+                        </form>
                     </div>
-
-                    <!-- Итоговая секция для дискового пространства -->
-                    <div class="total-section">
-                        <h3>ИТОГО В МЕСЯЦ:</h3>
-                        <div class="total-price" id="totalStoragePrice"><span>120 ₽/мес</span></div>
-                        <button class="order-btn" id="orderStorageBtn">Заказать хранилище</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Модальное окно для заказа хранилища -->
-            <div class="modal-overlay" id="storageModalOverlay">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <div class="modal-title">Ваш заказ дискового пространства</div>
-                        <button class="close-modal" id="closeStorageModal">×</button>
-                    </div>
-                    
-                    <div class="order-summary">
-                        <div class="order-item">
-                            <span>Тип хранилища:</span>
-                            <span id="orderStorageType">NVMe 200k IOPS</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Объем:</span>
-                            <span id="orderStorageSpace">10 ГБ</span>
-                        </div>
-                        <div class="order-item">
-                            <span>Резервное копирование:</span>
-                            <span id="orderBackup">7 дней</span>
-                        </div>
-                        <div class="order-total">
-                            <span>Итого в месяц:</span>
-                            <span id="orderStorageTotal">120 ₽/мес</span>
-                        </div>
-                    </div>
-
-                    <form id="storageOrderForm">
-                        <div class="form-group">
-                            <label for="storageUserName">Ваше имя *</label>
-                            <input type="text" id="storageUserName" required placeholder="Иван Иванов">
-                        </div>
-                        <div class="form-group">
-                            <label for="storageUserEmail">Email *</label>
-                            <input type="email" id="storageUserEmail" required placeholder="ivan@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="storageUserPhone">Телефон *</label>
-                            <input type="tel" id="storageUserPhone" required placeholder="+7 (999) 999-99-99">
-                        </div>
-                        <div class="form-group">
-                            <label for="storageUserComment">Комментарий к заказу</label>
-                            <textarea id="storageUserComment" placeholder="Дополнительные пожелания или требования"></textarea>
-                        </div>
-                        
-                        <button type="submit" class="submit-order">Отправить заказ</button>
-                    </form>
                 </div>
             </div>
         </div>      
